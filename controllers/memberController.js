@@ -15,8 +15,16 @@ memberController.signup = async (req, res) => {
 };
 
 memberController.login = async (req, res) => {
-  console.log("POST: cont/login");
-  res.send("you are in login page");
+  try {
+    console.log("POST: cont/login");
+    const data = req.body,
+      member = new Member(),
+      result = await member.loginData(data);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    res.json({ state: "fail", message: err.message });
+    console.log(`ERROR, cont/login, ${err.message} `);
+  }
 };
 
 memberController.logout = (req, res) => {
