@@ -41,11 +41,6 @@ const memberSchema = new mongoose.Schema(
       },
     },
 
-    mb_full_name: {
-      type: String,
-      required: false,
-    },
-
     mb_address: {
       type: String,
       required: false,

@@ -1,12 +1,17 @@
+const Member = require("../models/Member");
 let memberController = module.exports;
 
-memberController.home = async (req, res) => {
-  res.send("home page");
-};
-
 memberController.signup = async (req, res) => {
-  console.log("POST: cont/signup");
-  res.send("you are in sign up page");
+  try {
+    console.log("POST: cont/signup");
+    const data = req.body,
+      member = new Member(),
+      new_member = await member.signupData(data);
+    res.json({ state: "success", data: new_member });
+  } catch (err) {
+    res.json({ state: "fail", message: err.message });
+    console.log(`ERROR, cont/signup, ${err.message} `);
+  }
 };
 
 memberController.login = async (req, res) => {

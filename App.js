@@ -17,6 +17,7 @@ app.set("views", "views");
 app.set("view engine", "ejs");
 
 // Routing codes:
-app.use("/", router);
+app.use("/", router); // for restAPI
+// app.use("/admin", router); //for BSSR
 
 module.exports = app;
