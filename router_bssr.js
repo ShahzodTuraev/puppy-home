@@ -25,7 +25,7 @@ router_bssr
 router_bssr.get("/logout", shopController.logout);
 router_bssr.get("/check-me", shopController.checkSessions);
 
-router_bssr.get("/shop-control", shopController.getMyShopControl);
+router_bssr.get("/shop-control", shopController.getMyShopProducts);
 router_bssr.get("/admin-control", shopController.getAdminControl);
 
 // product related routers

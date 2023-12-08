@@ -1,4 +1,5 @@
 const Member = require("../models/Member");
+const Product = require("../models/Product");
 let shopController = module.exports;
 
 /**************************************
@@ -15,11 +16,12 @@ shopController.home = async (req, res) => {
   }
 };
 
-shopController.getMyShopControl = async (req, res) => {
+shopController.getMyShopProducts = async (req, res) => {
   try {
     console.log("GET: cont/getMyShopProducts");
-
-    res.render("shop-page");
+    const product = new Product(),
+      data = await product.getAllProductsDataShop(res.locals.member);
+    res.render("shop-page", { shop_data: data });
   } catch (err) {
     console.log(`ERROR, cont/getMyShopProducts, ${err.message} `);
     res.redirect("/admin");
