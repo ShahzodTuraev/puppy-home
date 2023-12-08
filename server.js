@@ -15,7 +15,7 @@ mongoose.connect(
     else {
       console.log("MongoDB connection success");
 
-      const app = require("./App");
+      const app = require("./app");
       const server = http.createServer(app);
       let PORT = process.env.PORT || 3007;
       server.listen(PORT, () => {
