@@ -103,3 +103,16 @@ shopController.checkSessions = (req, res) => {
     res.json({ state: "fail", message: "you are not authentificated" });
   }
 };
+
+shopController.validateAuthShop = (req, res, next) => {
+  if (req.session?.member?.mb_type === "SHOP") {
+    req.member = req.session.member;
+    next();
+  } else {
+    res.json({
+      state: "fail",
+      message: "only authenticated members with restaurant type",
+    });
+    // res.redirect("/admin");
+  }
+};

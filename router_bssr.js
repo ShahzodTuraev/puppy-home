@@ -1,10 +1,13 @@
 const express = require("express");
 const router_bssr = express.Router();
 const shopController = require("./controllers/shopController");
+const productController = require("./controllers/productController");
 
 /********************
  *     BSSR EJS     *
  ********************/
+
+// member related routers
 
 router_bssr.get("/", shopController.home);
 router_bssr
@@ -19,5 +22,18 @@ router_bssr.get("/check-me", shopController.checkSessions);
 
 router_bssr.get("/shop-control", shopController.getMyShopControl);
 router_bssr.get("/admin-control", shopController.getAdminControl);
+
+// product related routers
+
+router_bssr.post(
+  "/products/create",
+  shopController.validateAuthShop,
+  productController.addNewProduct
+);
+router_bssr.post(
+  "/products/edit/:id",
+  shopController.validateAuthShop,
+  productController.updateChosenProduct
+);
 
 module.exports = router_bssr;
