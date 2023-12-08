@@ -38,3 +38,20 @@ productController.addNewProduct = async (req, res) => {
     console.log(`ERROR, cont/addNewProduct, ${err.message} `);
   }
 };
+
+productController.updateChosenProduct = async (req, res) => {
+  try {
+    console.log("POST: cont/updateChosenProduct");
+    const product = new Product(),
+      id = req.params.id,
+      result = await product.updateChosenProductData(
+        id,
+        req.body,
+        req.member._id
+      );
+    await res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/updateChosenProduct, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};
