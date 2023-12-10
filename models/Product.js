@@ -15,6 +15,7 @@ class Product {
         shop_mb_id: member._id,
       });
       assert.ok(result, Definer.general_err1);
+
       return result;
     } catch (err) {
       throw err;

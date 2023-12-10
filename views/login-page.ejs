@@ -1,3 +1,40 @@
 <%-include('includes/header')%>
-<h1>login page</h1>
+<link rel="stylesheet" type="text/css" href="/css/login.css" />
+<body>
+  <form action="/admin/login" method="POST" class="login_container">
+    <div class="login_frame" style="height: 460px">
+      <div class="login_top">
+        <span class="login_title">Log in to your account</span>
+        <div class="login_input_frame">
+          <div class="login_input_container">
+            <label for="">Username:</label>
+            <input
+              placeholder="ex: Aux shop"
+              name="mb_nick"
+              type="text"
+              value=""
+              required
+            />
+          </div>
+          <div class="login_input_container">
+            <label for="">Password:</label>
+            <input
+              placeholder="****************"
+              name="mb_password"
+              type="password"
+              value=""
+              required
+            />
+          </div>
+        </div>
+        <button class="login_btn" name="login" type="submit">Log in</button>
+
+        <div class="signup_link">
+          <div>Don't have an account?</div>
+          <a href="/admin/sign-up">Sign up</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</body>
 <%-include('includes/footer')%>

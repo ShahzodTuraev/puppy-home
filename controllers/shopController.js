@@ -1,5 +1,7 @@
 const Member = require("../models/Member");
 const Product = require("../models/Product");
+const Definer = require("../lib/mistake");
+const assert = require("assert");
 let shopController = module.exports;
 
 /**************************************
@@ -20,7 +22,7 @@ shopController.getMyShopProducts = async (req, res) => {
   try {
     console.log("GET: cont/getMyShopProducts");
     const product = new Product(),
-      data = await product.getAllProductsDataShop(res.locals.member);
+      data = await product.getAllProductsDataShop(req.member);
     res.render("shop-page", { shop_data: data });
   } catch (err) {
     console.log(`ERROR, cont/getMyShopProducts, ${err.message} `);
@@ -43,9 +45,10 @@ shopController.signupProcess = async (req, res) => {
     console.log("POST: cont/signupProcess");
     let new_member = req.body;
     new_member.mb_type = "SHOP";
-
+    new_member.mb_image = req.file.path;
     const member = new Member(),
       result = await member.signupData(new_member);
+    assert.ok(result, Definer.general_err1);
     req.session.member = result;
     res.redirect("/admin/shop-control");
   } catch (err) {
