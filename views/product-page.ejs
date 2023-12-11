@@ -1,0 +1,28 @@
+<%-include('includes/header')%>
+<link rel="stylesheet" type="text/css" href="/css/shop.css" />
+<body>
+  <div class="shop_navbar">
+    <div class="nav_container">
+      <h2 class="page_name">Shop Page</h2>
+      <div class="nav_link_wrap">
+        <a href="/admin" class="nav_link">Home</a>
+        <a href="/admin/shop-control" class="nav_link">My Products</a>
+        <a href="/admin/shop-control" class="nav_link">My Clients</a>
+
+        <a href="/admin/logout" class="nav_link">Log out</a>
+      </div>
+      <div class="nav_right">
+        <div class="message_wrap">
+          <img class="message_icon" src="/images/message.svg" alt="email" />
+          <span class="message_cnt">
+            <p>4</p>
+          </span>
+        </div>
+        <img class="user_img" src="/images/default_shop.jpeg" alt="avatar" />
+        <p class="user_name"><%= member.mb_nick %></p>
+      </div>
+    </div>
+  </div>
+  <%= product_data.product_name %>
+</body>
+<%-include('includes/footer')%>

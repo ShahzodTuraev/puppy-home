@@ -40,10 +40,16 @@ router_bssr.post(
   uploader_product.array("product_images", 5),
   productController.addNewProduct
 );
-router_bssr.post(
-  "/products/edit/:id",
-  shopController.validateAuthShop,
-  productController.updateChosenProduct
-);
+router_bssr
+  .post(
+    "/products/edit/:id",
+    shopController.validateAuthShop,
+    productController.updateChosenProduct
+  )
+  .get(
+    "/products/edit/:id",
+    shopController.validateAuthShop,
+    productController.getUpdateChosenProduct
+  );
 
 module.exports = router_bssr;

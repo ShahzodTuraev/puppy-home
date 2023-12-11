@@ -55,3 +55,16 @@ productController.updateChosenProduct = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
+
+productController.getUpdateChosenProduct = async (req, res) => {
+  try {
+    console.log("POST: cont/getUpdateChosenProduct");
+    const product = new Product(),
+      id = req.params.id,
+      data = await product.getUpdateChosenProductData(req.member.id, id);
+    res.render("product-page", { product_data: data });
+  } catch (err) {
+    console.log(`ERROR, cont/getUpdateChosenProduct, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};

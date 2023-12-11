@@ -111,9 +111,7 @@
           const fileType = uploading_file["type"];
           const validImgTypes = ["image/jpg", "image/jpeg", "image/png"];
           if (!validImgTypes.includes(fileType)) {
-            alert(
-              "Iltimos ruxsat etilgan formatdagi rasmlarni yuklang: jpg, jpeg, png"
-            );
+            alert("Please, upload only allowed format image : jpg, jpeg, png");
           } else {
             if (uploading_file) {
               console.log(URL.createObjectURL(uploading_file));

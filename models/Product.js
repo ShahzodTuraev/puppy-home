@@ -34,6 +34,20 @@ class Product {
     }
   }
 
+  async getUpdateChosenProductData(mb_id, id) {
+    try {
+      id = shapeIntoMongooseObjectId(id);
+
+      const result = await this.productModel
+        .findById({ _id: id, shop_mb_id: mb_id })
+        .exec();
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async updateChosenProductData(id, updated_data, mb_id) {
     try {
       id = shapeIntoMongooseObjectId(id);

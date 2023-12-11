@@ -45,7 +45,7 @@ shopController.signupProcess = async (req, res) => {
     console.log("POST: cont/signupProcess");
     let new_member = req.body;
     new_member.mb_type = "SHOP";
-    new_member.mb_image = req.file.path;
+    new_member.mb_image = req.file.path.replace(/\\/g, "/");
     const member = new Member(),
       result = await member.signupData(new_member);
     assert.ok(result, Definer.general_err1);
@@ -77,11 +77,11 @@ shopController.loginProcess = async (req, res) => {
     req.session.member = result;
     req.session.save(() => {
       result.mb_type === "ADMIN"
-        ? res.redirect("/resto/admin-control")
+        ? res.redirect("/admin/admin-control")
         : res.redirect("/admin/shop-control");
     });
   } catch (err) {
-    res.redirect("/resto/login");
+    res.redirect("/admin/login");
     console.log(`ERROR, cont/login, ${err.message} `);
   }
 };
@@ -116,7 +116,7 @@ shopController.validateAuthShop = (req, res, next) => {
   } else {
     res.json({
       state: "fail",
-      message: "only authenticated members with restaurant type",
+      message: "only authenticated members with shop type",
     });
     // res.redirect("/admin");
   }

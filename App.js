@@ -24,7 +24,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     cookie: {
-      maxAge: 1000 * 60 * 60, //for 60 minutes
+      maxAge: 1000 * 60 * 120, //for 120 minutes
     },
     store: store,
     resave: true,
