@@ -50,7 +50,12 @@
           <td><%= value.product_left_cnt%></td>
           <td><%= value.product_status%></td>
           <td>
-            <a href="/admin/products/edit/<%= value._id %>">edit</a>
+            <a
+              style="text-decoration: none"
+              class="edit_link"
+              href="/admin/products/edit/<%= value._id %>"
+              >Edit</a
+            >
           </td>
         </tbody>
         <%});%>
@@ -60,7 +65,7 @@
       </div>
       <!-- ADD NEW PRODUCT FORM START -->
 
-      <form
+      <!-- <form
         onsubmit="return validateForm()"
         action="/admin/products/create"
         method="POST"
@@ -247,7 +252,7 @@
             Chop Etish
           </button>
         </div>
-      </form>
+      </form> -->
 
       <!-- ADD DISH FORM END -->
     </div>
