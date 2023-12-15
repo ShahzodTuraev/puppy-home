@@ -44,6 +44,15 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+
+    product_point: {
+      type: Number,
+      default: 0,
+    },
+    product_delivery_cost: {
+      type: Number,
+      required: true,
+    },
     product_description: { type: String, required: true },
     product_images: { type: Array, default: [] },
     product_likes: { type: Number, default: 0 },

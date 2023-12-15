@@ -18,11 +18,23 @@
             <p>4</p>
           </span>
         </div>
-        <img class="user_img" src="/images/default_shop.jpeg" alt="avatar" />
-        <p class="user_name"><%= member.mb_nick %></p>
+        <% let img_src = member.mb_image%>
+        
+        <div type="button" class=" user_box" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img class="user_img" src="<%= img_src.slice(7) %>" alt="avatar" />
+          <img class="bottom_arrow_icon" src="/images/bottom_arrow.svg" alt="icon">
+        </div>
+        <div class="dropdown-menu">
+          <div class="dropdown_item_init">
+            <img class="user_img" src="<%= img_src.slice(7) %>" alt="avatar" />
+            <span><%= member.mb_nick %></span>
+          </div>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item drop_items" href="#"><img src="/images/default_user.svg" alt="icon"> Edit Profile</a>
+          <a class="dropdown-item drop_items" href="#"><img src="/images/logout.svg" alt="icon"> Log out</a>
+          </div>
       </div>
     </div>
-    s
   </div>
   <div class="product_edit_wrap">
     <div class="product_edit_container">
@@ -41,7 +53,7 @@
         <div class="form-row double_input">
           <div class="col">
             <label for="edited_product_type">Product type</label>
-            <select class="form-control" id="edited_product_type">
+            <select class="form-control" value="<%= product_data.product_collection %>" id="edited_product_type">
               <option value="food" <%= product_data.product_collection === 'food' ? 'selected' : '' %>>Food</option>
               <option value="dress" <%= product_data.product_collection === 'dress' ? 'selected' : '' %>>Dress</option>
               <option value="toy" <%= product_data.product_collection === 'toy' ? 'selected' : '' %>>Toy</option>
@@ -52,7 +64,7 @@
           </div>
           <div class="col">
             <label for="edited_product_status">Product status</label>
-            <select class="form-control" id="edited_product_status">
+            <select class="form-control" value="<%= product_data.product_status %>" id="edited_product_status">
               <option value="PAUSED" <%= product_data.product_status === 'PAUSED' ? 'selected' : '' %> >Paused</option>
               <option value="PROCESS" <%= product_data.product_status === 'PROCESS' ? 'selected' : '' %> >Process</option>
               <option value="DELETED" <%= product_data.product_status === 'DELETED' ? 'selected' : '' %>>Deleted</option>
@@ -93,12 +105,12 @@
               class="form-control"
               id="edited_product_discount"
               placeholder="10"
-              value="<%= product_data.product_price %>"
+              value="<%= product_data.product_discount %>"
             />
           </div>
           <div class="col">
             <label for="edited_product_discount_period">Product discount period</label>
-            <select class="form-control" id="edited_product_discount_period">
+            <select value="<%= product_data.product_discount_period %>" class="form-control" id="edited_product_discount_period">
               <option value="0" <%= product_data.product_discount_period === '0' ? 'selected' : '' %>>None</option>
               <option value="6_hours" <%= product_data.product_discount_period === '6_hours' ? 'selected' : '' %>>6 hours</option>
               <option value="1_day" <%= product_data.product_discount_period === '1_day' ? 'selected' : '' %>>1 day</option>
@@ -107,17 +119,33 @@
             </select>
           </div>
         </div>
-        <div class="display_none">
-          <input type="text" id="product_type_default" value="<%= product_data.product_collection %>">
-          <input type="text" id="product_status_default" value="<%= product_data.product_status %>">
-          <input type="text" id="product_discount_period_default" value="<%= product_data.product_discount_period %>">
-
+        <div class="form-row double_input">
+          <div class="col">
+            <label for="edited_product_delivery_cost">Product delivery cost (won)</label>
+            <input
+              type="number"
+              min="0"
+              class="form-control"
+              id="edited_product_delivery_cost"
+              placeholder="10"
+              value="<%= product_data.product_delivery_cost %>"
+            />
+          </div>
+          <div class="col">
+            <label for="edited_product_point">Product point</label>
+            <input
+              type="number"
+              min="0"
+              class="form-control"
+              id="edited_product_point"
+              placeholder="200"
+              value="<%= product_data.product_point %>"
+            />
+          </div>
         </div>
-        <div class="form-group">
+        <div class="form-group product_desc_box">
           <label for="product_desc">Product description</label>
-          <textarea value="<%= product_data.product_description %>" class="form-control" id="product_desc" rows="5">
-            <%= product_data.product_description %>
-          </textarea>
+          <textarea  id="product_desc" value="<%= product_data.product_description %>"  rows="4"><%= product_data.product_description %></textarea>
         </div>
       </form>
       <div class="form_bottom">
@@ -132,9 +160,9 @@
         const id = e.target.id
         const name = $('#edited_product_name').attr('value');
         const new_name = $('#edited_product_name').val();
-        const type=$('#product_type_default').attr('value');
+        const type=$('#edited_product_type').attr('value');
         const new_type = $('#edited_product_type').val();
-        const status=$('#product_status_default').attr('value');
+        const status=$('#edited_product_status').attr('value');
         const new_status = $('#edited_product_status').val();
         const price = $('#edited_product_price').attr('value');
         const new_price = $('#edited_product_price').val();
@@ -142,10 +170,15 @@
         const new_left_cnt = $('#edited_product_left').val();
         const discount = $('#edited_product_discount').attr('value');
         const new_discount = $('#edited_product_discount').val();
-        const discount_period = $('#product_discount_period_default').attr('value');
+        const discount_period = $('#edited_product_discount_period').attr('value');
         const new_discount_period = $('#edited_product_discount_period').val();
-        // const desc = $('#product_desc').attr('value');
-        // const new_desc = $('#product_desc').val();
+        const delivery = $('#edited_product_delivery_cost').attr('value');
+        const new_delivery = $('#edited_product_delivery_cost').val();
+        const point = $('#edited_product_point').attr('value');
+        const new_point = $('#edited_product_point').val();
+        const desc = $('#product_desc').attr('value');
+        const new_desc = $('#product_desc').val()
+       
         let data={_id: id};
         if(name!==new_name && new_name !== '')data.product_name = new_name;
         if(type!==new_type)data.product_collection = new_type;
@@ -154,22 +187,24 @@
         if(left_cnt!==new_left_cnt && new_left_cnt !== '')data.product_left_cnt = new_left_cnt;
         if(discount!==new_discount && new_discount !== '')data.product_discount = new_discount;
         if(discount_period!==new_discount_period)data.product_discount_period = new_discount_period;
-        // if(desc!==new_desc)data.product_description = new_desc.trim();
-       if(Object.keys(data).length > 1)
-        console.log(Object.keys(data).length);
-        try{
-          const response = await axios.post(`/admin/products/edit/${id}`, data);
-          const result = response.data;
-          console.log("result: ", result);
-          if(result.state == 'success'){
-            alert('success');
-            
-          }else{
-            alert(result.message)
+        if(delivery!==new_delivery && new_delivery !== '')data.product_delivery_cost = new_delivery;
+        if(point!==new_point && new_point !== '')data.product_point = new_point;
+        if(desc!==new_desc && new_desc !== '')data.product_description = new_desc;
+      
+       if(Object.keys(data).length > 1){
+          try{
+            const response = await axios.post(`/admin/products/edit/${id}`, data);
+            const result = response.data;
+            if(result.state == 'success'){
+              alert("This product's data changed successfully!");
+
+            }else{
+              alert(result.message)
+            }
+          }catch(err){
+            console.log("updateChosenproduct", err);
           }
-        }catch(err){
-          console.log("updateChosenproduct", err);
-        }
+       }else alert('Please, edit the product first!')
       })
     })
 </script>

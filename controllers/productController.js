@@ -23,7 +23,6 @@ productController.addNewProduct = async (req, res) => {
     assert(req.files, Definer.general_err3);
     const product = new Product();
     let data = req.body;
-    console.log(req.files);
     data.product_images = req.files.map((ele) => {
       return ele.path.replace(/\\/g, "/");
     });
@@ -31,7 +30,7 @@ productController.addNewProduct = async (req, res) => {
     const result = await product.addNewProductData(data, req.member);
     const html = `<script>
                     alert("new product ${data.product_name} added successfully");
-                    window.location.replace('/admin/admin-control');
+                    window.location.replace('/admin/shop-control');
                   </script>`;
     res.end(html);
   } catch (err) {

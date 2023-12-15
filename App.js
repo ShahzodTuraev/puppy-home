@@ -15,6 +15,7 @@ const store = new MongoDbStore({
 
 // Entrance codes:
 app.use(express.static("public"));
+app.use(express.static("uploads"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
