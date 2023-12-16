@@ -67,7 +67,6 @@
             <select class="form-control" value="<%= product_data.product_status %>" id="edited_product_status">
               <option value="PAUSED" <%= product_data.product_status === 'PAUSED' ? 'selected' : '' %> >Paused</option>
               <option value="PROCESS" <%= product_data.product_status === 'PROCESS' ? 'selected' : '' %> >Process</option>
-              <option value="DELETED" <%= product_data.product_status === 'DELETED' ? 'selected' : '' %>>Deleted</option>
             </select>
           </div>
         </div>
@@ -197,7 +196,7 @@
             const result = response.data;
             if(result.state == 'success'){
               alert("This product's data changed successfully!");
-
+              window.location.replace("/admin/shop-control");
             }else{
               alert(result.message)
             }

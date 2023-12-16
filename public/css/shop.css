@@ -72,11 +72,17 @@ body {
 
 .dropdown_item_init span {
   font-weight: 500;
+  cursor: pointer;
+}
+
+textarea {
+  resize: none;
 }
 
 .drop_items {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .drop_items img {
@@ -170,6 +176,21 @@ body {
   background: #006de2;
 }
 
+.delete_item {
+  padding: 3px 15px;
+  background: #dc3545;
+  color: #ffffff;
+  border-radius: 4px;
+  font-style: normal;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.2s;
+}
+
+.delete_item:hover {
+  background: #c93141;
+}
+
 /* PRODUCT EDIT STYLES START */
 .product_edit_wrap {
   display: flex;
@@ -257,7 +278,7 @@ body {
 }
 
 .add_product_wrap {
-  height: 920px;
+  height: 900px;
 }
 
 .add_product_container {
@@ -272,16 +293,9 @@ body {
   margin-right: 15px;
 }
 
-/* .img_frame {
-  width: 100%;
-  height: 140px;
-  margin-bottom: 15px;
-  border: 1px solid red;
-} */
-
 .media_frame {
   width: 80%;
-  height: 110px;
+  height: 100px;
   margin-bottom: 15px;
   display: flex;
   justify-content: space-between;
@@ -309,3 +323,103 @@ body {
   height: 100%;
   cursor: pointer;
 }
+
+/* USER PROFILE EDIT STYLE START */
+.profile_edit_display {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.profile_edit_display .profile_card {
+  width: 500px;
+  height: 730px;
+  background: #f4f9fc;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 8px;
+  padding: 20px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.profile_edit_display .edit_img_wrap {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+}
+
+.edit_img_wrap .img_edit_icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
+
+.edit_img_wrap input {
+  opacity: 0;
+  border: none;
+  border-radius: 10px;
+  background: grey;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.profile_edit_display .edit_user_img {
+  height: 110px;
+  width: 110px;
+  border-radius: 50%;
+}
+
+.profile_edit_display .input_wrap {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+.profile_card button {
+  font-weight: 500;
+}
+
+.input_wrap label {
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.profile_card h2 {
+  color: #092635;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.profile_card textarea {
+  border: 1px solid #ced4da;
+  color: #495057;
+  overflow: auto;
+  border-radius: 4px;
+  padding: 10px;
+  outline: none;
+  transition: all 0.15s;
+}
+
+.profile_card textarea:focus {
+  border: 1px solid #007bff;
+  box-shadow: rgba(0, 123, 255, 0.4) 0px 0px 0px 2px,
+    rgba(0, 123, 255, 0.4) 0px 4px 6px -1px;
+}
+
+/* USER PROFILE EDIT STYLE END */

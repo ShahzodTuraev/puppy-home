@@ -30,6 +30,13 @@ router_bssr.get(
   shopController.validateAuthShop,
   shopController.getMyShopProducts
 );
+
+router_bssr.post(
+  "/member/edit/:id",
+  shopController.validateAuthShop,
+  shopController.updateChosenMember
+);
+
 router_bssr.get("/admin-control", shopController.getAdminControl);
 
 // product related routers

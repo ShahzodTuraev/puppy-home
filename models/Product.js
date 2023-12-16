@@ -11,11 +11,15 @@ class Product {
   async getAllProductsDataShop(member) {
     try {
       member._id = shapeIntoMongooseObjectId(member._id);
-      const result = await this.productModel.find({
-        shop_mb_id: member._id,
-      });
+      const result = await this.productModel.aggregate([
+        {
+          $match: {
+            shop_mb_id: member._id,
+            product_status: { $in: ["PAUSED", "PROCESS"] },
+          },
+        },
+      ]);
       assert.ok(result, Definer.general_err1);
-
       return result;
     } catch (err) {
       throw err;

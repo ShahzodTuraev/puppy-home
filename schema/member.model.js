@@ -40,7 +40,6 @@ const memberSchema = new mongoose.Schema(
         message: "{VALUE} is not among permitted values",
       },
     },
-
     mb_address: {
       type: String,
       required: false,
@@ -58,20 +57,14 @@ const memberSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-    mb_assessment: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
     mb_views: {
       type: Number,
       required: false,
       default: 0,
     },
-    mb_likes: {
-      type: Number,
+    mb_full_name: {
+      type: String,
       required: false,
-      default: 0,
     },
     mb_follow_cnt: {
       type: Number,

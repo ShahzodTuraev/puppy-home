@@ -97,8 +97,25 @@ shopController.getAdminControl = async (req, res) => {
 };
 
 shopController.logout = (req, res) => {
-  console.log("GET: cont/logout");
-  res.send("you are in logout page");
+  try {
+    console.log("GET cont/logout");
+    req.session.destroy(function () {
+      res.redirect("/admin");
+    });
+  } catch (err) {
+    console.log(`ERROR, cont/logout, ${err.message} `);
+  }
+};
+
+shopController.updateChosenMember = async (req, res) => {
+  try {
+    console.log("GET cont/updateChosenMember");
+    const member = new Member(),
+      result = await member.updateChosenMemberData(req.body);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/updateChosenMember, ${err.message} `);
+  }
 };
 
 shopController.checkSessions = (req, res) => {
