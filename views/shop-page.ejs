@@ -8,7 +8,7 @@
       <div class="nav_link_wrap">
         <a href="/admin" class="nav_link">Home</a>
         <a href="/admin/shop-control" style="color: coral" class="nav_link ">My Products</a>
-        <a href="/admin/shop-control" class="nav_link">My Clients</a>
+        <a href="/admin/shop-control" class="nav_link">My Sales</a>
         <a href="/admin/shop-control" class="nav_link">Order Requests</a>
 
       </div>
@@ -28,7 +28,7 @@
         <div class="dropdown-menu">
           <div class="dropdown_item_init">
             <img class="user_img" src="<%= img_src.slice(7) %>" alt="avatar" />
-            <span><%= member.mb_nick %></span>
+            <span class="dropdown_mb_nick"><%= member.mb_nick %></span>
           </div>
           <div class="dropdown-divider"></div>
           <span id="edit_mb_btn" class="dropdown-item drop_items" href="#"><img src="/images/default_user.svg" alt="icon"> Edit Profile</span>
@@ -243,8 +243,6 @@
     <h2>Edit profile</h2>
     <div class="edit_img_wrap">
       <img class="edit_user_img" src="<%= img_src.slice(7) %>" alt="user_avatar">
-      <img class="img_edit_icon" src="/images/photo_edit.svg" alt="icon">
-      <input type="file" class="img_class_name" onchange="previewImgUpdate(this)">
     </div>
     <div class="input_wrap">
       <label for="mb_nick">Shop name</label>
@@ -266,9 +264,18 @@
     />
     </div>
     <div class="input_wrap">
+      <label for="mb_email">Shop email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="mb_email"
+      value="<%=member.mb_email%>"
+    />
+    </div>
+    <div class="input_wrap">
       <label for="mb_phone">Phone number</label>
     <input
-      type="text"
+      type="number"
       class="form-control"
       id="mb_phone"
       value="<%=member.mb_phone%>"

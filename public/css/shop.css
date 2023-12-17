@@ -70,6 +70,10 @@ body {
   align-items: center;
 }
 
+.dropdown_mb_nick {
+  padding-right: 10px;
+}
+
 .dropdown_item_init span {
   font-weight: 500;
   cursor: pointer;
@@ -347,7 +351,6 @@ textarea {
 
 .profile_edit_display .profile_card {
   width: 500px;
-  height: 730px;
   background: #f4f9fc;
   transform: translate(-50%, -50%);
   position: absolute;

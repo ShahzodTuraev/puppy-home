@@ -12,6 +12,11 @@ const memberSchema = new mongoose.Schema(
       required: true,
       index: { unique: true, sparse: true },
     },
+    mb_email: {
+      type: String,
+      required: true,
+      index: { unique: true, sparse: true },
+    },
     mb_phone: {
       type: String,
       required: true,
@@ -53,11 +58,6 @@ const memberSchema = new mongoose.Schema(
       required: false,
     },
     mb_point: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    mb_views: {
       type: Number,
       required: false,
       default: 0,

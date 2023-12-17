@@ -1,4 +1,5 @@
 $(function () {
+  console.log($(".login_container"));
   $(".edit_comfirm_btn").on("click", async (e) => {
     const id = e.target.id;
     const name = $("#edited_product_name").attr("value");
@@ -21,8 +22,7 @@ $(function () {
     const new_point = $("#edited_product_point").val();
     const desc = $("#product_desc").attr("value");
     const new_desc = $("#product_desc").val();
-
-    let data = { _id: id };
+    const data = {};
     if (name !== new_name && new_name !== "") data.product_name = new_name;
     if (type !== new_type) data.product_collection = new_type;
     if (status !== new_status) data.product_status = new_status;
@@ -39,7 +39,7 @@ $(function () {
     if (desc !== new_desc && new_desc !== "")
       data.product_description = new_desc;
 
-    if (Object.keys(data).length > 1) {
+    if (Object.keys(data).length > 0) {
       try {
         const response = await axios.post(`/admin/products/edit/${id}`, data);
         const result = response.data;

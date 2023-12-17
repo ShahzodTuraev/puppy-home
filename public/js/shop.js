@@ -63,19 +63,24 @@ $(function () {
     const new_address = $("#mb_address").val();
     const description = $("#mb_description").attr("value");
     const new_description = $("#mb_description").val();
-
+    const email = $("#mb_email").attr("value");
+    const new_email = $("#mb_email").val();
     let data = { _id: id };
     if (name !== new_name && new_name !== "") data.mb_nick = new_name;
     if (full_name !== new_full_name) data.mb_full_name = new_full_name;
     if (phone !== new_phone && new_phone !== "") data.mb_phone = new_phone;
+    if (email !== new_email && new_email !== "") data.mb_email = new_email;
     if (address !== new_address) data.mb_address = new_address;
     if (description !== new_description) data.mb_description = new_description;
+
     if (Object.keys(data).length > 1) {
       try {
         const response = await axios.post(`/admin/member/edit/${id}`, data);
         const result = response.data;
         if (result.state == "success") {
-          alert("This member's data changed successfully!");
+          alert(
+            "This member's data changed successfully. In order to use the account, login with updated user data again!"
+          );
           window.location.replace("/admin/logout");
         } else {
           alert(result.message);
@@ -126,21 +131,3 @@ function previewFileHandler(input, order) {
   }
 }
 // add new product form related scripts end
-
-// edit member profile form related scripts start
-function previewImgUpdate(input) {
-  const img_class_name = input.className;
-  const file = $(`.${img_class_name}`).get(0).files[0];
-  (fileType = file["type"]),
-    (validImageTypes = ["image/jpg", "image/jpeg", "image/png"]);
-  if (!validImageTypes.includes(fileType)) {
-    alert("Please upload only allowed formats (jpg, jpeg, png)");
-  } else {
-    let reader = new FileReader();
-    reader.onload = function () {
-      $(".edit_user_img").attr("src", reader.result);
-    };
-    reader.readAsDataURL(file);
-  }
-}
-// edit member profile form related scripts end

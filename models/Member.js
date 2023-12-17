@@ -63,6 +63,50 @@ class Member {
       throw err;
     }
   }
+
+  async getAdminControlData() {
+    try {
+      const result = await this.memberModel
+        .find({
+          mb_type: { $in: ["SHOP", "USER"] },
+          mb_status: { $in: ["ONPAUSE", "ACTIVE"] },
+        })
+        .exec();
+      assert(result, Definer.general_err1);
+      console.log(result);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getRequiredUsersData(type) {
+    try {
+      let result;
+      switch (type) {
+        case "shop":
+          result = await this.memberModel
+            .find({
+              mb_type: "SHOP",
+              mb_status: { $in: ["ONPAUSE", "ACTIVE"] },
+            })
+            .exec();
+          break;
+        case "user":
+          result = await this.memberModel
+            .find({
+              mb_type: "USER",
+              mb_status: { $in: ["ONPAUSE", "ACTIVE"] },
+            })
+            .exec();
+          break;
+      }
+      assert(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Member;

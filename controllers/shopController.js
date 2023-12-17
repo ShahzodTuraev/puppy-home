@@ -77,7 +77,7 @@ shopController.loginProcess = async (req, res) => {
     req.session.member = result;
     req.session.save(() => {
       result.mb_type === "ADMIN"
-        ? res.redirect("/admin/admin-control")
+        ? res.redirect("/admin/control")
         : res.redirect("/admin/shop-control");
     });
   } catch (err) {
@@ -88,10 +88,38 @@ shopController.loginProcess = async (req, res) => {
 
 shopController.getAdminControl = async (req, res) => {
   try {
-    console.log("POST: cont/getAdminControl");
-    res.render("admin-page");
+    console.log("GET: cont/getAdminControl");
+    const user = new Member(),
+      user_data = await user.getAdminControlData();
+    res.render("admin-page", { user_data: user_data });
   } catch (err) {
-    console.log(`ERROR, cont/getLoginMyShop, ${err.message} `);
+    console.log(`ERROR, cont/getAdminControl, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+shopController.getRequiredUsers = async (req, res) => {
+  try {
+    console.log("GET: cont/getRequiredUsers");
+    const user = new Member(),
+      type = req.params.type,
+      user_data = await user.getRequiredUsersData(type);
+    res.render("admin-page", { user_data: user_data });
+  } catch (err) {
+    console.log(`ERROR, cont/getRequiredUsers, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+shopController.updateUserByAdmin = async (req, res) => {
+  try {
+    console.log("POST: cont/updateUserByAdmin");
+    console.log("status:::", req.body);
+    const member = new Member(),
+      result = await member.updateChosenMemberData(req.body);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/updateUserByAdmin, ${err.message} `);
     res.json({ state: "fail", message: err.message });
   }
 };
@@ -136,5 +164,18 @@ shopController.validateAuthShop = (req, res, next) => {
       message: "only authenticated members with shop type",
     });
     // res.redirect("/admin");
+  }
+};
+
+shopController.validateAdmin = (req, res, next) => {
+  if (req.session?.member?.mb_type === "ADMIN") {
+    req.member = req.session.member;
+    next();
+  } else {
+    const html = `<script>
+                    alert("Admin page: Permission denied!")
+                    window.location.replace("/admin")  
+                  </script>`;
+    res.end(html);
   }
 };

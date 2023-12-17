@@ -8,12 +8,12 @@
     method="POST"
     enctype="multipart/form-data"
   >
-    <div class="login_frame" style="width: 650px; height: 730px">
+    <div class="login_frame" style="width: 650px; height: auto">
       <div class="login_top">
         <span class="login_title">Sign up</span>
       </div>
       <div class="sign_input_frame">
-        <div class="sign_up_frame">
+        <div class="sign_up_frame" style="width: 100%">
           <label for="">Username</label>
           <input
             type="text"
@@ -25,10 +25,23 @@
             autocomplete="off"
           />
         </div>
+      </div>
+      <div class="sign_input_frame">
+        <div class="sign_up_frame">
+          <label for="">Email</label>
+          <input
+            type="email"
+            name="mb_email"
+            class="mb_email"
+            placeholder="example@email.com"
+            value=""
+            required
+          />
+        </div>
         <div class="sign_up_frame">
           <label for="">Phone number</label>
           <input
-            type="text"
+            type="number"
             name="mb_phone"
             class="mb_phone"
             placeholder="010 5788 5120"
@@ -102,6 +115,7 @@
   </form>
   <script>
     $(function () {
+      console.log("shop img:::", $(".shop_img").get(0).files[0]);
       let fileTarget = $(".filebox .upload-hidden");
       let filename = "";
       fileTarget.on("change", function () {
@@ -128,6 +142,7 @@
     function validateSignUpForm() {
       const mb_nick = $(".mb_nick").val();
       const mb_phone = $(".mb_phone").val();
+      const mb_email = $(".mb_email").val();
       const mb_password = $(".mb_password").val();
       const mb_confirm_password = $(".mb_confirm_password").val();
       const shop_img = $(".shop_img").get(0).files[0] ?? null;
@@ -135,7 +150,8 @@
         mb_nick == "" ||
         mb_password == "" ||
         mb_phone == "" ||
-        mb_confirm_password == ""
+        mb_confirm_password == "" ||
+        mb_email == ""
       ) {
         alert("Please, input all required fields");
         return false;

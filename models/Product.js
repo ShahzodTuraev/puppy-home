@@ -55,6 +55,7 @@ class Product {
   async updateChosenProductData(id, updated_data, mb_id) {
     try {
       id = shapeIntoMongooseObjectId(id);
+      mb_id = shapeIntoMongooseObjectId(mb_id);
       const result = await this.productModel
         .findOneAndUpdate({ _id: id, shop_mb_id: mb_id }, updated_data, {
           runValidators: true,

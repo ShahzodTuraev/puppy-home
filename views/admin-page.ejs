@@ -1,3 +1,158 @@
 <%-include('includes/header')%>
-<h1>admin page</h1>
+<link rel="stylesheet" type="text/css" href="/css/shop.css" />
+<script src="/js/shop.js"></script>
+<body>
+    <div class="shop_navbar">
+        <div class="nav_container">
+          <h2 class="page_name">Shop Page</h2>
+          <div class="nav_link_wrap">
+            <a href="/admin" class="nav_link">Home</a>
+            <a href="/admin/control" class="nav_link ">All Users Control</a>
+            <a href="/admin/control/shop" class="nav_link">Shops Control</a>
+            <a href="/admin/control/user" class="nav_link">Users Control</a>
+            <a href="/admin/control/user" class="nav_link">Events Control</a>
+    
+          </div>
+          <div class="nav_right">
+            <div class="message_wrap">
+              <img class="message_icon" src="/images/message.svg" alt="email" />
+              <span class="message_cnt">
+                <p>4</p>
+              </span>
+            </div>
+            <% let img_src = member.mb_image%>
+            
+            <div type="button" class=" user_box" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img class="user_img" src="<%= img_src.slice(7) %>" alt="avatar" />
+              <img class="bottom_arrow_icon" src="/images/bottom_arrow.svg" alt="icon">
+            </div>
+            <div class="dropdown-menu">
+              <div class="dropdown_item_init">
+                <img class="user_img" src="<%= img_src.slice(7) %>" alt="avatar" />
+                <span class="dropdown_mb_nick"><%= member.mb_nick %></span>
+              </div>
+              <div class="dropdown-divider"></div>
+              <span id="edit_mb_btn" class="dropdown-item drop_items" href="#"><img src="/images/default_user.svg" alt="icon"> Edit Profile</span>
+              <a class="dropdown-item drop_items" href="/admin/logout"><img src="/images/logout.svg" alt="icon"> Log out</a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="shop_content_wrap">
+        <div class="shop_content">
+          <h2 class="content_title">All Users Status</h2>
+          <div class="add_btn_wrap">
+            <button class="btn btn-primary">Message to all users <img src="/images/envelope.svg" alt="messsage"></button>
+            </div>
+            <% if(user_data.length>0){%>
+          <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+              <th scope="col">N</th>
+              <th scope="col">User name</th>
+              <th scope="col">User type</th>
+              <th scope="col">User email</th>
+              <th scope="col">User phone</th>
+              <th scope="col">User status</th>
+              <th scope="col">Sending message</th>
+            </thead>
+            <% user_data.map((value, key) => { %>
+            <tbody id="<%= value._id %>" class="products_table_body">
+              <td><%= key + 1 %></td>
+              <td><%= value.mb_nick%></td>
+              <td><%= value.mb_type%></td>
+              <td><%= value.mb_email%></td>
+              <td><%= value.mb_phone%></td>
+              <td>
+                  <select class="spec_select, mb_status_change" id="<%= value._id %>">
+                      <option value="ONPAUSE" <%= value.mb_status === 'ONPAUSE' ? 'selected' : '' %> >ONPAUSE</option>
+                      <option value="ACTIVE" <%= value.mb_status === 'ACTIVE' ? 'selected' : '' %> >ACTIVE</option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary">Send message 
+                        <img src="/images/envelope.svg" alt="messsage">
+                    </button>
+                </td>
+            </tbody>
+            <%});%>
+          </table>
+          <%}else{%>
+            <div class="no_product_wrap">
+              <h4 class="no_product_alert">There is no any product in your shop page</h4>
+            </div>
+            <%}%>
+          </div>
+        </div>
+      </div>
+
+    <!-- USER PROFILE EDIT START-->
+<div class="profile_edit_display">
+    <form class="profile_card">
+      <h2>Edit profile</h2>
+      <div class="edit_img_wrap">
+        <img class="edit_user_img" src="<%= img_src.slice(7) %>" alt="user_avatar">
+      </div>
+      <div class="input_wrap">
+        <label for="mb_nick">Shop name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="mb_nick"
+        value="<%=member.mb_nick%>"
+      />
+      </div>
+      <div class="input_wrap">
+        <label for="mb_full_name">Shop owner name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="mb_full_name"
+        value="<%=member.mb_full_name%>"
+        placeholder="ex: John Smith"
+      />
+      </div>
+      <div class="input_wrap">
+        <label for="mb_email">Shop email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="mb_email"
+        value="<%=member.mb_email%>"
+      />
+      </div>
+      <div class="input_wrap">
+        <label for="mb_phone">Phone number</label>
+      <input
+        type="number"
+        class="form-control"
+        id="mb_phone"
+        value="<%=member.mb_phone%>"
+      />
+      </div>
+      <div class="input_wrap">
+        <label for="mb_address">Shop address (google maps embed link)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="mb_address"
+        value="<%=member.mb_address%>"
+        placeholder="<iframe src=https://www.google.com/maps/embed?."
+      />
+      </div>
+      <div class="input_wrap">
+        <label for="mb_description">Shop description</label>
+      <textarea placeholder="type here" value="<%=member.mb_description%>" id="mb_description" cols="5" rows="5"><%=member.mb_description%></textarea>
+      </div>
+      <div >
+        <button type="button" id="<%=member._id%>" class="btn btn-primary add_comfirm_btn mb_edit_comfirm">Confirm</button>
+        <button type="button" class="btn btn-danger" id="mb_edit_concel">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <!-- USER PROFILE EDIT END-->
+    
+    <script src="/js/admin.js"></script>
+</body>
 <%-include('includes/footer')%>
