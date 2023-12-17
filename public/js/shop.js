@@ -9,22 +9,37 @@ $(function () {
   });
 
   // delete item btn scripts
-  $(".delete_item").on("click", async (e) => {
+  $(".delete_item").on("click", (e) => {
     let id = e.target.id;
+    $(".delete_item_confirm").attr("id", `${id}`);
+    $(".delete_display").show();
+  });
+
+  $(".delete_item_confirm").on("click", async (e) => {
+    let id = e.target.id;
+    // $(".delete_display").hide();
     try {
       const response = await axios.post(`/admin/products/edit/${id}`, {
         product_status: "DELETED",
       });
       const result = response.data;
       if (result.state == "success") {
-        confirm("Do you want to delete the item?");
+        $("#delete_alert").show();
         location.reload();
+        setTimeout(() => {
+          $(".delete_display").hide();
+          $("#delete_alert").hide();
+        }, 800);
       } else {
         alert(result.message);
       }
     } catch (err) {
       console.log("deleteProduct", err);
     }
+  });
+
+  $("#delete_box_close").on("click", () => {
+    $(".delete_display").hide();
   });
 
   // member edit scripts start

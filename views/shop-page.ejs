@@ -38,12 +38,14 @@
       </div>
     </div>
   </div>
+  
   <div class="shop_content_wrap">
     <div class="shop_content">
       <h2 class="content_title">All Product Status</h2>
       <div class="add_btn_wrap">
         <button class="btn btn-primary hiding_btn">Add New Product +</button>
         </div>
+        <% if(shop_data.length>0){%>
       <table class="table table-bordered table-hover">
         <thead class="thead-light">
           <th scope="col">N</th>
@@ -77,6 +79,11 @@
         </tbody>
         <%});%>
       </table>
+      <%}else{%>
+        <div class="no_product_wrap">
+          <h4 class="no_product_alert">There is no any product in your shop page</h4>
+        </div>
+        <%}%>
       </div>
     </div>
   </div>
@@ -222,7 +229,7 @@
           </div>
         </div>
         <div class="form_bottom">
-          <button type="submit" id="form_submit_btn" class="btn btn-primary add_comfirm_btn">Comfirm</button>
+          <button type="submit" id="form_submit_btn" class="btn btn-primary add_comfirm_btn">Confirm</button>
           <button type="button" class="btn btn-danger" id="adding_concel">Cancel</button>
         </div>
       </form>
@@ -282,13 +289,31 @@
     <textarea placeholder="type here" value="<%=member.mb_description%>" id="mb_description" cols="5" rows="5"><%=member.mb_description%></textarea>
     </div>
     <div >
-      <button type="button" id="<%=member._id%>" class="btn btn-primary add_comfirm_btn mb_edit_comfirm">Comfirm</button>
+      <button type="button" id="<%=member._id%>" class="btn btn-primary add_comfirm_btn mb_edit_comfirm">Confirm</button>
       <button type="button" class="btn btn-danger" id="mb_edit_concel">Cancel</button>
     </div>
   </form>
 </div>
 <!-- USER PROFILE EDIT END-->
+
+<!-- DELETE CONFIRMATION PAGE START -->
+<div class="delete_display">
+  <div class="delete_alert_wrap" id="delete_alert">
+    <div class="alert_box">
+      <img src="/images/check_icon.svg" alt="check_icon">
+      <span>Item deleted successfully!</span>
+    </div>
+  </div>
+  <div class="delete_box">
+    <img src="/images/delete_icon.svg" alt="delete_icon">
+    <h4>Do you want to delete the item?</h4>
+    <div class="delete_btn_box">
+      <button type="button" id="delete_box_close" class="btn btn-secondary">Cancel</button>
+      <button type="button" class="btn btn-danger delete_item_confirm">Delete</button>
+    </div>
+  </div>
+</div>
+<!-- DELETE CONFIRMATION PAGE END -->
 </body>
 <script src="/js/shop.js"></script>
-
 <%-include('includes/footer')%>

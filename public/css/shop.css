@@ -140,6 +140,7 @@ textarea {
 .shop_content_wrap {
   width: 100%;
   display: flex;
+  margin-top: 60px;
   justify-content: center;
 }
 
@@ -150,7 +151,6 @@ textarea {
 
 .content_title {
   text-align: center;
-  margin: 40px 0 0 0;
   color: #092635;
 }
 
@@ -160,6 +160,16 @@ textarea {
 
 .products_table_body td {
   font-size: 16px;
+}
+
+.no_product_wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.no_product_alert {
+  align-items: center;
+  color: #636363;
 }
 
 .edit_link {
@@ -423,3 +433,74 @@ textarea {
 }
 
 /* USER PROFILE EDIT STYLE END */
+
+.delete_display {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.delete_display .delete_box {
+  width: 400px;
+  background: #ffffff;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  border-radius: 8px;
+  padding: 20px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #636363;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.delete_box img {
+  width: 70px;
+  height: 70px;
+}
+.delete_box h4 {
+  text-align: center;
+  font-size: 22px;
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+
+.delete_box .delete_btn_box {
+  display: flex;
+  width: 47%;
+  justify-content: space-between;
+}
+
+.delete_btn_box button {
+  font-weight: 500;
+}
+
+.delete_alert_wrap {
+  position: absolute;
+  left: 50%;
+  display: none;
+  transform: translate(-50%);
+  top: 2%;
+}
+
+.delete_alert_wrap .alert_box {
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 5px;
+  width: 250px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert_box span {
+  margin-left: 10px;
+}
