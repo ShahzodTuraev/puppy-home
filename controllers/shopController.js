@@ -179,3 +179,16 @@ shopController.validateAdmin = (req, res, next) => {
     res.end(html);
   }
 };
+
+shopController.validateAuthShopAndAdmin = (req, res, next) => {
+  if (["SHOP", "ADMIN"].includes(req.session?.member?.mb_type)) {
+    req.member = req.session.member;
+    next();
+  } else {
+    res.json({
+      state: "fail",
+      message: "only authenticated members with shop or admin type",
+    });
+    // res.redirect("/admin");
+  }
+};

@@ -73,7 +73,6 @@ class Member {
         })
         .exec();
       assert(result, Definer.general_err1);
-      console.log(result);
       return result;
     } catch (err) {
       throw err;

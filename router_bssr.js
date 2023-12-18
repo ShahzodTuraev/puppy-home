@@ -2,6 +2,7 @@ const express = require("express");
 const router_bssr = express.Router();
 const shopController = require("./controllers/shopController");
 const productController = require("./controllers/productController");
+const notificationController = require("./controllers/notificationController");
 const uploader_product = require("./utils/upload-multer")("products");
 const uploader_member = require("./utils/upload-multer")("members");
 /********************
@@ -74,5 +75,13 @@ router_bssr
     shopController.validateAuthShop,
     productController.getUpdateChosenProduct
   );
+
+// Notification related routers
+
+router_bssr.post(
+  "/notification/send",
+  shopController.validateAuthShopAndAdmin,
+  notificationController.sendNotification
+);
 
 module.exports = router_bssr;
