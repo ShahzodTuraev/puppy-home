@@ -11,9 +11,11 @@ class Notification {
     this.memberModel = MemberModel;
   }
 
-  async sendNotificationData(sender_id, data) {
+  async sendNotificationData(sender, data) {
     try {
-      let result = ["all", "user", "shop"].includes(data.notif_receiver_id)
+      const sender_id = sender._id;
+      let result;
+      result = ["all", "user", "shop", "admin"].includes(data.notif_receiver_id)
         ? await this.sendNotificationAllData(sender_id, data)
         : await this.sendNotificationOneData(sender_id, data);
       assert.ok(result, Definer.notif_err1);
@@ -72,6 +74,14 @@ class Notification {
             })
             .exec();
           break;
+        case "admin":
+          mb_result = await this.memberModel
+            .find({
+              mb_type: "ADMIN",
+              mb_status: { $in: ["ONPAUSE", "ACTIVE"] },
+            })
+            .exec();
+          break;
       }
       return mb_result;
     } catch (err) {
@@ -92,6 +102,67 @@ class Notification {
     } catch (mongo_err) {
       console.log(mongo_err);
       throw new Error(Definer.notif_err2);
+    }
+  }
+
+  async receiveNotificationData(notif_receiver_id) {
+    try {
+      notif_receiver_id = shapeIntoMongooseObjectId(notif_receiver_id);
+      const result = await this.notificationModel
+        .aggregate([
+          {
+            $match: {
+              notif_receiver_id: notif_receiver_id,
+              notif_status: "UNSEEN",
+            },
+          },
+          { $sort: { createdAt: -1 } },
+          {
+            $lookup: {
+              from: "members",
+              localField: "notif_sender_id",
+              foreignField: "_id",
+              as: "sender_data",
+            },
+          },
+          { $unwind: "$sender_data" },
+        ])
+        .exec();
+      assert.ok(result, Definer.notif_err4);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async seenNotificationData(receiver_id, notification_id) {
+    try {
+      let result;
+      if (notification_id == "all") {
+        receiver_id = shapeIntoMongooseObjectId(receiver_id);
+        result = await this.notificationModel.updateMany(
+          { notif_receiver_id: receiver_id, notif_status: "UNSEEN" },
+          { notif_status: "SEEN" }
+        );
+      } else {
+        notification_id = shapeIntoMongooseObjectId(notification_id);
+        result = await this.notificationModel
+          .findByIdAndUpdate(
+            { _id: notification_id },
+            { notif_status: "SEEN" },
+            {
+              runValidators: true,
+              lean: true,
+              returnDocument: "after",
+            }
+          )
+          .exec();
+      }
+
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
     }
   }
 }

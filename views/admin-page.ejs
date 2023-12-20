@@ -14,11 +14,47 @@
     
           </div>
           <div class="nav_right">
+            <% let message_count = user_data[1].length%>
             <div class="message_wrap">
-              <img class="message_icon" src="/images/message.svg" alt="email" />
-              <span class="message_cnt">
-                <p>4</p>
+              <img class="message_icon show_message" src="/images/message.svg" alt="email" />
+              <span class="message_cnt show_message">
+                <p class="message_count_num"><%= message_count %></p>
               </span>
+              <div class="notification_dropdown">
+                <div class="notification_header">
+                  <p>Notifications</p>
+                </div>
+                <hr>
+                <div class="notification_messages_wrap">
+                  <% user_data[1].map((value, key) => {%>
+                    <div id="message_container" class="message_container">
+                      <img id="message_img" src="<%=value.sender_data.mb_image.slice(7)%>" alt="avatar">
+                      <div class="message_header_wrap">
+                        <div class="sender_name_wrap">
+                          <p class="sender_name"><%=value.sender_data.mb_nick%></p>
+                          <img id="<%=value._id%>" src="/images/x.svg" class="delete_one_message" alt="x">
+                        </div>
+                        <p class="message_subject"><%=value.notif_subject%></p>
+                        <p class="message_content"><%=value.notif_content%></p>
+                        <% 
+                          let year = new Date(value.createdAt).getFullYear();
+                          let month = new Date(value.createdAt).getMonth()+1;
+                          let date = new Date(value.createdAt).getDate();
+                          let hour = new Date(value.createdAt).getHours();
+                          let minute = new Date(value.createdAt).getMinutes()
+                        
+                        %>
+                        <p class="message_time"><%= `${year}-${month}-${date} ${hour}:${minute} ` %></p>
+                      </div>
+                    </div>
+                    <%})%>
+                
+                    
+                </div>
+                <div id="delete_all_message" class="notification_bottom">
+                  Mark all as read
+                </div>
+              </div>
             </div>
             <% let img_src = member.mb_image%>
             
@@ -57,7 +93,7 @@
               <th scope="col">User status</th>
               <th scope="col">Sending message</th>
             </thead>
-            <% user_data.map((value, key) => { %>
+            <% user_data[0].map((value, key) => { %>
             <tbody id="<%= value._id %>" class="products_table_body">
               <td><%= key + 1 %></td>
               <td><%= value.mb_nick%></td>

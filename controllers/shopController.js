@@ -1,5 +1,6 @@
 const Member = require("../models/Member");
 const Product = require("../models/Product");
+const Notification = require("../models/Notification");
 const Definer = require("../lib/mistake");
 const assert = require("assert");
 let shopController = module.exports;
@@ -22,7 +23,13 @@ shopController.getMyShopProducts = async (req, res) => {
   try {
     console.log("GET: cont/getMyShopProducts");
     const product = new Product(),
-      data = await product.getAllProductsDataShop(req.member);
+      product_data = await product.getAllProductsDataShop(req.member),
+      notification = new Notification(),
+      receiver_id = req.member._id,
+      notification_data = await notification.receiveNotificationData(
+        receiver_id
+      ),
+      data = [product_data, notification_data];
     res.render("shop-page", { shop_data: data });
   } catch (err) {
     console.log(`ERROR, cont/getMyShopProducts, ${err.message} `);
@@ -90,8 +97,14 @@ shopController.getAdminControl = async (req, res) => {
   try {
     console.log("GET: cont/getAdminControl");
     const user = new Member(),
-      user_data = await user.getAdminControlData();
-    res.render("admin-page", { user_data: user_data });
+      user_data = await user.getAdminControlData(),
+      notification = new Notification(),
+      receiver_id = req.member._id,
+      notification_data = await notification.receiveNotificationData(
+        receiver_id
+      );
+    const data = [user_data, notification_data];
+    res.render("admin-page", { user_data: data });
   } catch (err) {
     console.log(`ERROR, cont/getAdminControl, ${err.message} `);
     res.json({ state: "fail", message: err.message });

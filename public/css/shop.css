@@ -110,6 +110,11 @@ textarea {
   justify-content: space-between;
   align-items: center;
   position: relative;
+  transition: all 0.2s;
+}
+
+.nav_right .message_wrap:hover {
+  background: #f0f0f0;
 }
 
 .message_wrap .message_icon {
@@ -127,6 +132,7 @@ textarea {
   height: 20px;
   top: 25%;
   right: -12%;
+  cursor: pointer;
 }
 
 .message_cnt p {
@@ -141,10 +147,135 @@ textarea {
   color: rgb(255, 255, 230);
 }
 
+.notification_dropdown {
+  width: 300px;
+  height: 400px;
+  position: absolute;
+  right: 0px;
+  top: 60px;
+  background: #ffffff;
+  display: none;
+  z-index: 2;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 5px;
+}
+
+.notification_dropdown .notification_header {
+  display: flex;
+  justify-content: center;
+  height: 33px;
+}
+
+.notification_header p {
+  font-size: 16px;
+  font-weight: 550;
+  color: #495057;
+  margin-top: 5px;
+}
+
+.notification_dropdown hr {
+  background: #e9ecef;
+  margin: 0;
+}
+
+.notification_dropdown .notification_messages_wrap {
+  width: 100%;
+  height: 336px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.notification_messages_wrap .message_container {
+  display: flex;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  width: 100%;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.message_container img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message_header_wrap .sender_name_wrap {
+  display: flex;
+  justify-content: space-between;
+  width: 217px;
+}
+
+.sender_name_wrap img {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  margin: 0;
+  transition: all 0.2s;
+}
+
+.sender_name_wrap img:hover {
+  background: #e4e5ff;
+}
+
+.message_header_wrap .sender_name {
+  font-weight: 500;
+  color: #17a2b8;
+  font-family: "Roboto";
+  font-size: 14px;
+  line-height: 14px;
+  margin-bottom: 5px;
+}
+
+.message_header_wrap .message_subject {
+  font-family: "Roboto";
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 14px;
+  margin-bottom: 6px;
+}
+
+.message_header_wrap .message_content {
+  font-family: "Roboto";
+  font-size: 13px;
+  line-height: 16px;
+  margin-bottom: 2px;
+  color: #34383d;
+}
+
+.message_header_wrap .message_time {
+  font-size: 11px;
+  color: #385af0;
+  font-family: "Roboto";
+  margin-bottom: 0;
+  margin-bottom: 2px;
+  text-align: right;
+  margin-right: 5px;
+}
+
+.notification_dropdown .notification_bottom {
+  width: 100%;
+  height: 30px;
+  background-color: #28a745;
+  border-radius: 5px;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notification_dropdown .notification_bottom:hover {
+  background-color: #22963d;
+}
+
 .shop_content_wrap {
   width: 100%;
   display: flex;
-  margin-top: 60px;
+  margin-top: 20px;
   justify-content: center;
 }
 
@@ -493,7 +624,7 @@ textarea {
   top: 2%;
 }
 
-.delete_alert_wrap .alert_box {
+.alert_box {
   background: #f6ffed;
   border: 1px solid #b7eb8f;
   border-radius: 5px;
@@ -506,4 +637,97 @@ textarea {
 
 .alert_box span {
   margin-left: 10px;
+}
+
+.contact_display {
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.contact_display .contact_box {
+  width: 500px;
+  background: #f4f9fc;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 8px;
+  padding: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.contact_box h3 {
+  color: #092635;
+  font-weight: 500;
+  font-size: 24px;
+  margin-bottom: 0px;
+}
+
+.contact_box .input_wrap {
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact_box .input_wrap label {
+  margin-bottom: 10px;
+}
+
+.contact_box textarea {
+  border: 1px solid #ced4da;
+  color: #495057;
+  overflow: auto;
+  border-radius: 4px;
+  padding: 10px;
+  outline: none;
+  transition: all 0.15s;
+}
+
+.contact_box textarea:focus {
+  border: 1px solid #007bff;
+  box-shadow: rgba(0, 123, 255, 0.4) 0px 0px 0px 2px,
+    rgba(0, 123, 255, 0.4) 0px 4px 6px -1px;
+}
+
+.contact_box .contact_btn_wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.contact_btn_wrap .contact_submit {
+  margin-right: 10px;
+}
+
+.input_alert_box {
+  height: 14px;
+  margin-bottom: 20px;
+}
+
+.input_alert_box p {
+  color: red;
+  text-align: center;
+  font-size: 14px;
+  display: none;
+}
+.alert_message_wrap {
+  display: none;
+}
+
+.all_alert_box {
+  height: 40px;
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
 }

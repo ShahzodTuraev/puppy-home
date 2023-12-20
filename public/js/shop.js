@@ -92,6 +92,100 @@ $(function () {
   });
 
   // member edit scripts end
+
+  // contact admin scripts start
+  $("#contact_admin").on("click", () => {
+    $(".contact_display").show();
+  });
+
+  $("#contact_cancel").on("click", () => {
+    $(".contact_display").hide();
+    $("#notif_subject").val("");
+    $("#notif_content").val("");
+  });
+  $("#contact_submit").on("click", async () => {
+    const notif_receiver_id = "admin";
+    const notif_subject = $("#notif_subject").val();
+    const notif_content = $("#notif_content").val();
+    const contact_data = {
+      notif_subject: notif_subject,
+      notif_content: notif_content,
+      notif_receiver_id: notif_receiver_id,
+    };
+    if (notif_content !== "" && notif_subject !== "") {
+      try {
+        const response = await axios.post(
+          `/admin/notification/send`,
+          contact_data
+        );
+        const result = response.data;
+        if (result.state == "success") {
+          $(".contact_display").hide();
+          $("#notif_subject").val("");
+          $("#notif_content").val("");
+          $("#contact_alert").show();
+          setTimeout(() => {
+            $("#contact_alert").fadeOut();
+          }, 1800);
+        } else {
+          alert(result.message);
+        }
+      } catch (err) {
+        console.log("contactAdmin", err);
+      }
+    } else {
+      $("#notif_alert_text").show();
+    }
+  });
+  $("#notif_subject").on("focus", () => {
+    $("#notif_alert_text").hide();
+  });
+  $("#notif_content").on("focus", () => {
+    $("#notif_alert_text").hide();
+  });
+
+  // contact admin scripts end
+
+  // show messages scripts start
+
+  $(".show_message").on("click", async () => {
+    $(".notification_dropdown").slideToggle();
+  });
+
+  $(".delete_one_message").on("click", async (e) => {
+    try {
+      const id = e.target.id;
+      let message_count = $(".message_count_num").text() * 1;
+      $(".message_count_num").text(message_count - 1);
+      $(`#${id}`).parentsUntil(".notification_messages_wrap").hide();
+      const response = await axios.post(`/admin/notification/receive`, {
+        id: id,
+      });
+      const result = response.data;
+      if (result.state !== "success") alert(result.message);
+    } catch (err) {
+      console.log("deleteNotification", err);
+    }
+  });
+
+  $("#delete_all_message").on("click", async () => {
+    try {
+      const response = await axios.post(`/admin/notification/receive`, {
+        id: "all",
+      });
+      const result = response.data;
+      if (result.state == "success") {
+        $(".message_count_num").text("0");
+        $(".message_container").hide();
+      } else {
+        alert(result.message);
+      }
+    } catch (err) {
+      console.log("deleteNotification", err);
+    }
+  });
+
+  // show messages scripts end
 });
 // add new product form related scripts start
 function validateForm() {

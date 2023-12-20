@@ -84,4 +84,16 @@ router_bssr.post(
   notificationController.sendNotification
 );
 
+router_bssr
+  .get(
+    "/notification/receive",
+    shopController.validateAuthShopAndAdmin,
+    notificationController.receiveNotification
+  )
+  .post(
+    "/notification/receive",
+    shopController.validateAuthShopAndAdmin,
+    notificationController.seenNotification
+  );
+
 module.exports = router_bssr;

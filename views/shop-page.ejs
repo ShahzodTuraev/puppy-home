@@ -10,15 +10,52 @@
         <a href="/admin/shop-control" style="color: coral" class="nav_link ">My Products</a>
         <a href="/admin/shop-control" class="nav_link">My Sales</a>
         <a href="/admin/shop-control" class="nav_link">Order Requests</a>
-
+        <span id="contact_admin" class="nav_link">Contact Admin</span>
       </div>
       <div class="nav_right">
+        <% let message_count = shop_data[1].length%>
         <div class="message_wrap">
-          <img class="message_icon" src="/images/message.svg" alt="email" />
-          <span class="message_cnt">
-            <p>4</p>
+          <img class="message_icon show_message" src="/images/message.svg" alt="email" />
+          <span class="message_cnt show_message">
+            <p class="message_count_num"><%= message_count %></p>
           </span>
+          <div class="notification_dropdown">
+            <div class="notification_header">
+              <p>Notifications</p>
+            </div>
+            <hr>
+            <div class="notification_messages_wrap">
+              <% shop_data[1].map((value, key) => {%>
+                <div id="message_container" class="message_container">
+                  <img id="message_img" src="<%=value.sender_data.mb_image.slice(7)%>" alt="avatar">
+                  <div class="message_header_wrap">
+                    <div class="sender_name_wrap">
+                      <p class="sender_name"><%=value.sender_data.mb_nick%></p>
+                      <img id="<%=value._id%>" src="/images/x.svg" class="delete_one_message" alt="x">
+                    </div>
+                    <p class="message_subject"><%=value.notif_subject%></p>
+                    <p class="message_content"><%=value.notif_content%></p>
+                    <% 
+                      let year = new Date(value.createdAt).getFullYear();
+                      let month = new Date(value.createdAt).getMonth()+1;
+                      let date = new Date(value.createdAt).getDate();
+                      let hour = new Date(value.createdAt).getHours();
+                      let minute = new Date(value.createdAt).getMinutes()
+                    
+                    %>
+                    <p class="message_time"><%= `${year}-${month}-${date} ${hour}:${minute} ` %></p>
+                  </div>
+                </div>
+                <%})%>
+            
+                
+            </div>
+            <div id="delete_all_message" class="notification_bottom">
+              Mark all as read
+            </div>
+          </div>
         </div>
+
         <% let img_src = member.mb_image%>
         
         <div type="button" class=" user_box" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,14 +75,21 @@
       </div>
     </div>
   </div>
-  
+  <div class="all_alert_box">
+    <div id="contact_alert" class="alert_message_wrap">
+      <div class="alert_box">
+        <img src="/images/check_icon.svg" alt="check_icon">
+        <span>Message sent successfully!</span>
+      </div>
+    </div>
+  </div>
   <div class="shop_content_wrap">
     <div class="shop_content">
       <h2 class="content_title">All Product Status</h2>
       <div class="add_btn_wrap">
         <button class="btn btn-primary hiding_btn">Add New Product +</button>
         </div>
-        <% if(shop_data.length>0){%>
+        <% if(shop_data[0].length>0){%>
       <table class="table table-bordered table-hover">
         <thead class="thead-light">
           <th scope="col">N</th>
@@ -58,7 +102,7 @@
           <th scope="col">Product status</th>
           <th scope="col">Edit & Delete product</th>
         </thead>
-        <% shop_data.map((value, key) => { %>
+        <% shop_data[0].map((value, key) => { %>
         <tbody id="<%= value._id %>" class="products_table_body">
           <td><%= key + 1 %></td>
           <td><%= value.product_name%></td>
@@ -87,10 +131,10 @@
       </div>
     </div>
   </div>
-  <div class="add_product_display">
 
-    <!-- ADD NEW PRODUCT FORM START -->
+  <!-- ADD NEW PRODUCT FORM START -->
   
+  <div class="add_product_display">
   <div class="product_edit_wrap add_product_wrap">
     <div class="product_edit_container add_product_container">
       <h2 class="product_title">Add New Product</h2>
@@ -321,6 +365,34 @@
   </div>
 </div>
 <!-- DELETE CONFIRMATION PAGE END -->
+
+<!-- CONTACT ADMIN POPUP START -->
+<div class="contact_display">
+  <div class="contact_box">
+    <h3>Message to Admin</h3>
+    <div class="input_alert_box">
+      <p id="notif_alert_text" class="input_alert">Pleace fill out all field!</p>
+    </div>
+    <div class="input_wrap">
+      <label for="notif_subject">Notification subject</label>
+      <input
+        type="text"
+        class="form-control"
+        id="notif_subject"
+        placeholder="message content"
+      />
+    </div>
+    <div class="input_wrap">
+      <label for="notif_content">Notification content</label>
+      <textarea placeholder="type message"  id="notif_content" cols="5" rows="8"></textarea>
+    </div>
+    <div class="contact_btn_wrap">
+      <button type="button"  class="btn btn-primary contact_submit" id="contact_submit">Confirm</button>
+      <button type="button" class="btn btn-danger" id="contact_cancel">Cancel</button>
+    </div>
+    
+  </div>
+<!-- CONTACT ADMIN POPUP END -->
 </body>
 <script src="/js/shop.js"></script>
 <%-include('includes/footer')%>
