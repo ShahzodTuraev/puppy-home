@@ -17,7 +17,6 @@ $(function () {
 
   $(".delete_item_confirm").on("click", async (e) => {
     let id = e.target.id;
-    // $(".delete_display").hide();
     try {
       const response = await axios.post(`/admin/products/edit/${id}`, {
         product_status: "DELETED",
@@ -170,16 +169,16 @@ $(function () {
 
   $("#delete_all_message").on("click", async () => {
     try {
+      $(".message_count_num").text("0");
+      $(".message_container").hide();
+      setTimeout(() => {
+        $(".notification_dropdown").slideUp();
+      }, 100);
       const response = await axios.post(`/admin/notification/receive`, {
         id: "all",
       });
       const result = response.data;
-      if (result.state == "success") {
-        $(".message_count_num").text("0");
-        $(".message_container").hide();
-      } else {
-        alert(result.message);
-      }
+      if (result.state !== "success") alert(result.message);
     } catch (err) {
       console.log("deleteNotification", err);
     }

@@ -3,6 +3,7 @@ const router_bssr = express.Router();
 const shopController = require("./controllers/shopController");
 const productController = require("./controllers/productController");
 const notificationController = require("./controllers/notificationController");
+const eventController = require("./controllers/eventController");
 const uploader_product = require("./utils/upload-multer")("products");
 const uploader_member = require("./utils/upload-multer")("members");
 /********************
@@ -96,4 +97,21 @@ router_bssr
     notificationController.seenNotification
   );
 
+// Events related routers
+
+router_bssr.post(
+  "/event-create",
+  shopController.validateAdmin,
+  eventController.addNewEvent
+);
+router_bssr.get(
+  "/events-list",
+  shopController.validateAdmin,
+  eventController.getAllEvents
+);
+router_bssr.post(
+  "/event-edit/:id",
+  shopController.validateAdmin,
+  eventController.editSelectedEvent
+);
 module.exports = router_bssr;

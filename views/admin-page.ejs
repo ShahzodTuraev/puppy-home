@@ -7,11 +7,10 @@
           <h2 class="page_name">Shop Page</h2>
           <div class="nav_link_wrap">
             <a href="/admin" class="nav_link">Home</a>
-            <a href="/admin/control" class="nav_link ">All Users Control</a>
-            <a href="/admin/control/shop" class="nav_link">Shops Control</a>
-            <a href="/admin/control/user" class="nav_link">Users Control</a>
-            <a href="/admin/control/user" class="nav_link">Events Control</a>
-    
+            <a id="all" href="/admin/control" class="nav_link all_link">All Users Control</a>
+            <a id="shop" href="/admin/control/shop" class="nav_link shop_link">Shops Control</a>
+            <a id="user" href="/admin/control/user" class="nav_link user_link">Users Control</a>
+            <a href="/admin/events-list" class="nav_link">Events Control</a>
           </div>
           <div class="nav_right">
             <% let message_count = user_data[1].length%>
@@ -75,12 +74,19 @@
           </div>
         </div>
     </div>
-
+    <div class="all_alert_box">
+      <div id="contact_alert" class="alert_message_wrap">
+        <div class="alert_box">
+          <img src="/images/check_icon.svg" alt="check_icon">
+          <span>Message sent successfully!</span>
+        </div>
+      </div>
+    </div>
     <div class="shop_content_wrap">
         <div class="shop_content">
-          <h2 class="content_title">All Users Status</h2>
+          <h2 id="all" class="content_title">All Users Status</h2>
           <div class="add_btn_wrap">
-            <button class="btn btn-primary">Message to all users <img src="/images/envelope.svg" alt="messsage"></button>
+            <button class="btn btn-primary send_all_message">Message to all users <img src="/images/envelope.svg" alt="messsage"></button>
             </div>
             <% if(user_data.length>0){%>
           <table class="table table-bordered table-hover">
@@ -107,7 +113,7 @@
                     </select>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-primary">Send message 
+                    <button id="<%=value._id%>" type="button" class="btn btn-primary send_one_message">Send message 
                         <img src="/images/envelope.svg" alt="messsage">
                     </button>
                 </td>
@@ -188,7 +194,34 @@
     </form>
   </div>
   <!-- USER PROFILE EDIT END-->
-    
+  <!-- CONTACT ADMIN POPUP START -->
+<div class="contact_display">
+  <div class="contact_box">
+    <h3>Send message </h3>
+    <div class="input_alert_box">
+      <p id="notif_alert_text" class="input_alert">Pleace fill out all field!</p>
+    </div>
+    <div class="input_wrap">
+      <label for="notif_subject">Notification subject</label>
+      <input
+        type="text"
+        class="form-control"
+        id="notif_subject"
+        placeholder="message content"
+      />
+    </div>
+    <div class="input_wrap">
+      <label for="notif_content">Notification content</label>
+      <textarea placeholder="type message"  id="notif_content" cols="5" rows="8"></textarea>
+    </div>
+    <div class="contact_btn_wrap">
+      <button type="button"  class="btn btn-primary contact_submit" >Send</button>
+      <button type="button" class="btn btn-danger" id="contact_cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- CONTACT ADMIN POPUP END -->
+
     <script src="/js/admin.js"></script>
 </body>
 <%-include('includes/footer')%>

@@ -116,8 +116,14 @@ shopController.getRequiredUsers = async (req, res) => {
     console.log("GET: cont/getRequiredUsers");
     const user = new Member(),
       type = req.params.type,
-      user_data = await user.getRequiredUsersData(type);
-    res.render("admin-page", { user_data: user_data });
+      user_data = await user.getRequiredUsersData(type),
+      notification = new Notification(),
+      receiver_id = req.member._id,
+      notification_data = await notification.receiveNotificationData(
+        receiver_id
+      );
+    const data = [user_data, notification_data];
+    res.render("admin-page", { user_data: data });
   } catch (err) {
     console.log(`ERROR, cont/getRequiredUsers, ${err.message} `);
     res.json({ state: "fail", message: err.message });

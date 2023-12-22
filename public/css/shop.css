@@ -731,3 +731,32 @@ textarea {
   display: flex;
   justify-content: center;
 }
+
+/* EVENTS STYLE START */
+.event_page .event_feat {
+  display: flex;
+  width: 75%;
+}
+
+.event_page .event_feat p {
+  width: 85%;
+}
+
+.event_page .event_feat span {
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.event_card {
+  position: relative;
+}
+
+.event_card .event_box_buttons_wrap {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+.contact_btn_wrap .add_event_confirm {
+  margin-right: 10px;
+}
+/* EVENTS STYLE END */
