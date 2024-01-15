@@ -8,7 +8,7 @@
       <div class="nav_link_wrap">
         <a href="/admin" class="nav_link">Home</a>
         <a href="/admin/shop-control" style="color: coral" class="nav_link ">My Products</a>
-        <a href="/admin/shop-control" class="nav_link">My Sales</a>
+        <a href="/admin/statistics" class="nav_link">My Statistics</a>
         <a href="/admin/shop-control" class="nav_link">Order Requests</a>
         <span id="contact_admin" class="nav_link">Contact Admin</span>
       </div>
@@ -46,18 +46,14 @@
                     <p class="message_time"><%= `${year}-${month}-${date} ${hour}:${minute} ` %></p>
                   </div>
                 </div>
-                <%})%>
-            
-                
+                <%})%>               
             </div>
             <div id="delete_all_message" class="notification_bottom">
               Mark all as read
             </div>
           </div>
         </div>
-
         <% let img_src = member.mb_image%>
-        
         <div type="button" class=" user_box" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <img class="user_img" src="<%= img_src.slice(7) %>" alt="avatar" />
           <img class="bottom_arrow_icon" src="/images/bottom_arrow.svg" alt="icon">
@@ -70,7 +66,6 @@
           <div class="dropdown-divider"></div>
           <span id="edit_mb_btn" class="dropdown-item drop_items" href="#"><img src="/images/default_user.svg" alt="icon"> Edit Profile</span>
           <a class="dropdown-item drop_items" href="/admin/logout"><img src="/images/logout.svg" alt="icon"> Log out</a>
-          </div>
         </div>
       </div>
     </div>

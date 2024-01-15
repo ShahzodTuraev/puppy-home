@@ -77,6 +77,12 @@ router_bssr
     productController.getUpdateChosenProduct
   );
 
+router_bssr.get(
+  "/statistics",
+  shopController.validateAuthShop,
+  productController.getMyStatistics
+);
+
 // Notification related routers
 
 router_bssr.post(

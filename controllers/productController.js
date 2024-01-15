@@ -1,6 +1,7 @@
 const assert = require("assert");
 const Definer = require("../lib/mistake");
 const Product = require("../models/Product");
+const Notification = require("../models/Notification");
 let productController = module.exports;
 
 /**************************************
@@ -61,6 +62,24 @@ productController.getUpdateChosenProduct = async (req, res) => {
     res.render("product-page", { product_data: data });
   } catch (err) {
     console.log(`ERROR, cont/getUpdateChosenProduct, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+productController.getMyStatistics = async (req, res) => {
+  try {
+    console.log("GET: cont/getMyStatistics");
+    const product = new Product(),
+      product_data = await product.getAllProductsDataShop(req.member),
+      notification = new Notification(),
+      receiver_id = req.member._id,
+      notification_data = await notification.receiveNotificationData(
+        receiver_id
+      ),
+      data = [product_data, notification_data];
+    res.render("statistics-page", { statistics: data });
+  } catch (err) {
+    console.log(`ERROR, cont/getMyStatistics, ${err.message} `);
     res.json({ state: "fail", message: err.message });
   }
 };

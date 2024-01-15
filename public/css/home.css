@@ -2,10 +2,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100vh;
-  background: #2c361e;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+    url("/images/main.webp");
+  background-size: cover;
 }
 .group_name {
   position: absolute;
@@ -16,40 +18,17 @@ body {
   font-family: monospace;
 }
 
-.animation-wrapper {
-  width: 45%;
+.main_nav {
+  transition: all 0.1s;
 }
-
-.sphere-animation {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 580px;
-  height: 580px;
-  margin: -290px 0 0 -290px;
-}
-
-.sphere path {
-  fill: url(#sphereGradient);
-  stroke-width: 1px;
-  stroke: rgba(80, 80, 80, 0.35);
-  backface-visibility: hidden;
-}
-
-@media (min-width: 500px) {
-  .sphere path {
-    stroke-width: 0.4px;
-  }
-}
-
-.cursor {
-  cursor: pointer;
+.main_nav:hover {
+  font-size: 30px;
 }
 
 .page_desc {
   position: absolute;
   bottom: 10px;
   color: #e2dada;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 400;
 }

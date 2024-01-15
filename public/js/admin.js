@@ -14,7 +14,6 @@ $(function () {
   });
 
   $(".send_all_message").on("click", () => {
-    console.log(window.location.href.includes("shon"));
     if (window.location.href.includes("shop")) {
       $(".contact_submit").attr("id", "shop");
     } else if (window.location.href.includes("user")) {
