@@ -1,6 +1,7 @@
 const MemberModel = require("../schema/member.model");
 const bcrypt = require("bcryptjs");
 const Definer = require("../lib/mistake");
+const View = require("./View");
 const assert = require("assert");
 const { shapeIntoMongooseObjectId } = require("../lib/config");
 
@@ -120,6 +121,26 @@ class Member {
 
       assert.ok(result, Definer.general_err2);
       return result[0];
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async viewChosenItemByMember(member, view_ref_id, group_type) {
+    try {
+      view_ref_id = shapeIntoMongooseObjectId(view_ref_id);
+      const mb_id = shapeIntoMongooseObjectId(member._id);
+      const view = new View(mb_id);
+      const isValid = await view.validateChosenTarger(view_ref_id, group_type);
+      assert.ok(isValid, Definer.general_err2);
+
+      const doesExist = await view.checkViewExistence(view_ref_id);
+
+      if (!doesExist) {
+        const result = await view.insertMemberView(view_ref_id, group_type);
+        assert.ok(result, Definer.general_err1);
+      }
+      return true;
     } catch (err) {
       throw err;
     }
