@@ -106,6 +106,24 @@ class Member {
       throw err;
     }
   }
+
+  async getChosenMemberData(member, id) {
+    try {
+      // const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      id = shapeIntoMongooseObjectId(id);
+      let aggregationQuery = [
+        { $match: { _id: id, mb_status: "ACTIVE" } },
+        { $unset: "mb_password" },
+      ];
+
+      const result = await this.memberModel.aggregate(aggregationQuery).exec();
+
+      assert.ok(result, Definer.general_err2);
+      return result[0];
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Member;
