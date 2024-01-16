@@ -45,6 +45,18 @@ memberController.logout = (req, res) => {
   res.send("you are in logout page");
 };
 
+memberController.checkMyAuthentication = (req, res) => {
+  try {
+    console.log("GET: cont/checkMyAuthentication");
+    let token = req.cookies["access_token"];
+    const member = token ? jwt.verify(token, process.env.SECRET_TOKEN) : null;
+    assert.ok(member, Definer.auth_err2);
+    res.json({ state: "success", data: member });
+  } catch (err) {
+    throw err;
+  }
+};
+
 memberController.createToken = (result) => {
   try {
     const upload_data = {

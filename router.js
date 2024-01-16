@@ -11,5 +11,5 @@ const memberController = require("./controllers/memberController");
 router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
 router.get("/logout", memberController.logout);
-
+router.get("/check-me", memberController.checkMyAuthentication);
 module.exports = router;
