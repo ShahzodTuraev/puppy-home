@@ -1,5 +1,5 @@
 const MemberModel = require("../schema/member.model");
-// const ProductModel = require("../schema/product.model");
+const ProductModel = require("../schema/product.model");
 const ViewModel = require("../schema/view.model");
 
 class View {
@@ -7,7 +7,6 @@ class View {
     this.viewModel = ViewModel;
     this.memberModel = MemberModel;
     this.productModel = ProductModel;
-    this.bo_articleModel = Bo_articleModel;
     this.mb_id = mb_id;
   }
 
@@ -23,14 +22,14 @@ class View {
             })
             .exec();
           break;
-        case "community":
-          result = await this.bo_articleModel
-            .findOne({
-              _id: view_ref_id,
-              art_status: "active",
-            })
-            .exec();
-          break;
+        // case "community":
+        //   result = await this.bo_articleModel
+        //     .findOne({
+        //       _id: view_ref_id,
+        //       art_status: "active",
+        //     })
+        //     .exec();
+        //   break;
       }
 
       return !!result;
@@ -53,35 +52,35 @@ class View {
     }
   }
 
-  //   async modifyItmeViewCounts(view_ref_id, group_type) {
-  //     try {
-  //       switch (group_type) {
-  //         case "product":
-  //           await this.productModel
-  //             .findByIdAndUpdate(
-  //               {
-  //                 _id: view_ref_id,
-  //               },
-  //               { $inc: { product_views: 1 } }
-  //             )
-  //             .exec();
-  //           break;
-  //         case "community":
-  //           await this.bo_articleModel
-  //             .findByIdAndUpdate(
-  //               {
-  //                 _id: view_ref_id,
-  //               },
-  //               { $inc: { art_views: 1 } }
-  //             )
-  //             .exec();
-  //           break;
-  //       }
-  //       return true;
-  //     } catch (err) {
-  //       throw err;
-  //     }
-  //   }
+  async modifyItmeViewCounts(view_ref_id, group_type) {
+    try {
+      switch (group_type) {
+        case "product":
+          await this.productModel
+            .findByIdAndUpdate(
+              {
+                _id: view_ref_id,
+              },
+              { $inc: { product_views: 1 } }
+            )
+            .exec();
+          break;
+        case "community":
+          await this.bo_articleModel
+            .findByIdAndUpdate(
+              {
+                _id: view_ref_id,
+              },
+              { $inc: { art_views: 1 } }
+            )
+            .exec();
+          break;
+      }
+      return true;
+    } catch (err) {
+      throw err;
+    }
+  }
 
   async checkViewExistence(view_ref_id) {
     try {

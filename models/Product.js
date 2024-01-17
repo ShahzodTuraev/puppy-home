@@ -2,6 +2,7 @@ const ProductModel = require("../schema/product.model");
 const Definer = require("../lib/mistake");
 const assert = require("assert");
 const { shapeIntoMongooseObjectId } = require("../lib/config");
+const Member = require("./Member");
 
 class Product {
   constructor() {
@@ -23,19 +24,38 @@ class Product {
         ],
       };
 
-      const sort = {
-        createdAt: -1,
-      };
-      data.order.sale ? (sort.product_discount = -1) : sort;
-      data.order.view ? (sort.product_views = -1) : sort;
-      data.order.review ? (sort.product_review = -1) : sort;
-      data.order.points ? (sort.product_point = -1) : sort;
+      const sort =
+        data.order === "product_price"
+          ? { [data.order]: 1 }
+          : { [data.order]: -1 };
       const result = await this.productModel
         .aggregate([
           { $match: match },
           { $sort: sort },
           { $skip: (data.page * 1 - 1) * data.limit },
           { $limit: data.limit * 1 },
+        ])
+        .exec();
+      //todo: check auth user product likes
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getChosenProductData(member, id) {
+    try {
+      const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      id = shapeIntoMongooseObjectId(id);
+
+      if (member) {
+        const member_obj = new Member();
+        await member_obj.viewChosenItemByMember(member, id, "product");
+      }
+      const result = await this.productModel
+        .aggregate([
+          { $match: { _id: id, product_status: "PROCESS" } },
           {
             $lookup: {
               from: "members",
@@ -45,11 +65,11 @@ class Product {
             },
           },
           { $unwind: "$shop_data" },
+          //todo: check auth user product likes
         ])
         .exec();
-      // check auth user product likes
       assert.ok(result, Definer.general_err1);
-      return result;
+      return result[0];
     } catch (err) {
       throw err;
     }
