@@ -56,6 +56,39 @@ class Community {
       throw err;
     }
   }
+
+  async getArticlesData(member, inquery) {
+    try {
+      const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      let matches = { art_status: "active" };
+
+      inquery.limit *= 1;
+      inquery.page *= 1;
+      const sort = { createdAt: -1 };
+      const result = await this.boArticleModel
+        .aggregate([
+          { $match: matches },
+          { $sort: sort },
+          { $skip: (inquery.page - 1) * inquery.limit },
+          { $limit: inquery.limit },
+          {
+            $lookup: {
+              from: "members",
+              localField: "mb_id",
+              foreignField: "_id",
+              as: "member_data",
+            },
+          },
+          { $unwind: "$member_data" },
+          //   todo: article liked by user
+        ])
+        .exec();
+      assert.ok(result, Definer.article_err3);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Community;
