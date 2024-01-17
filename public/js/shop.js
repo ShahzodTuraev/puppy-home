@@ -54,22 +54,22 @@ $(function () {
     const id = e.target.id;
     const name = $("#mb_nick").attr("value");
     const new_name = $("#mb_nick").val();
-    const full_name = $("#mb_full_name").attr("value");
-    const new_full_name = $("#mb_full_name").val();
+    const full_name = $("#mb_address").attr("value");
+    const new_full_name = $("#mb_address").val();
     const phone = $("#mb_phone").attr("value");
     const new_phone = $("#mb_phone").val();
-    const address = $("#mb_address").attr("value");
-    const new_address = $("#mb_address").val();
+    const address = $("#mb_location").attr("value");
+    const new_address = $("#mb_location").val();
     const description = $("#mb_description").attr("value");
     const new_description = $("#mb_description").val();
     const email = $("#mb_email").attr("value");
     const new_email = $("#mb_email").val();
     let data = { _id: id };
     if (name !== new_name && new_name !== "") data.mb_nick = new_name;
-    if (full_name !== new_full_name) data.mb_full_name = new_full_name;
+    if (full_name !== new_full_name) data.mb_address = new_full_name;
     if (phone !== new_phone && new_phone !== "") data.mb_phone = new_phone;
     if (email !== new_email && new_email !== "") data.mb_email = new_email;
-    if (address !== new_address) data.mb_address = new_address;
+    if (address !== new_address) data.mb_location = new_address;
     if (description !== new_description) data.mb_description = new_description;
 
     if (Object.keys(data).length > 1) {

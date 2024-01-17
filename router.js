@@ -33,4 +33,12 @@ router.get(
   productController.getChosenProduct
 );
 
+// service related routers
+
+router.post(
+  "/services",
+  memberController.retrieveAuthMember,
+  productController.getAllServices
+);
+
 module.exports = router;

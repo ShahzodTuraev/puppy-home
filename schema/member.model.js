@@ -62,7 +62,7 @@ const memberSchema = new mongoose.Schema(
       required: false,
       default: 0,
     },
-    mb_full_name: {
+    mb_location: {
       type: String,
       required: false,
     },

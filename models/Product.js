@@ -75,6 +75,33 @@ class Product {
     }
   }
 
+  async getAllServicesData(member, data) {
+    try {
+      const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      const match = {
+        product_status: "PROCESS",
+        product_collection: "service",
+        product_name: { $in: data.service_collection },
+        product_description: { $in: data.service_area },
+      };
+
+      const sort = { [data.order]: -1 };
+      const result = await this.productModel
+        .aggregate([
+          { $match: match },
+          { $sort: sort },
+          { $skip: (data.page * 1 - 1) * data.limit },
+          { $limit: data.limit * 1 },
+        ])
+        .exec();
+      //todo: check auth user product likes
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getAllProductsDataShop(member) {
     try {
       member._id = shapeIntoMongooseObjectId(member._id);
