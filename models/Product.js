@@ -8,6 +8,53 @@ class Product {
     this.productModel = ProductModel;
   }
 
+  async getAllProductsData(member, data) {
+    try {
+      const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      const match = {
+        product_status: "PROCESS",
+        product_collection: {
+          $in: data.product_collection,
+        },
+        $or: [
+          {
+            product_price: { $gt: data.min_price * 1, $lt: data.max_price * 1 },
+          },
+        ],
+      };
+
+      const sort = {
+        createdAt: -1,
+      };
+      data.order.sale ? (sort.product_discount = -1) : sort;
+      data.order.view ? (sort.product_views = -1) : sort;
+      data.order.review ? (sort.product_review = -1) : sort;
+      data.order.points ? (sort.product_point = -1) : sort;
+      const result = await this.productModel
+        .aggregate([
+          { $match: match },
+          { $sort: sort },
+          { $skip: (data.page * 1 - 1) * data.limit },
+          { $limit: data.limit * 1 },
+          {
+            $lookup: {
+              from: "members",
+              localField: "shop_mb_id",
+              foreignField: "_id",
+              as: "shop_data",
+            },
+          },
+          { $unwind: "$shop_data" },
+        ])
+        .exec();
+      // check auth user product likes
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getAllProductsDataShop(member) {
     try {
       member._id = shapeIntoMongooseObjectId(member._id);

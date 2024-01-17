@@ -1,7 +1,6 @@
 const MemberModel = require("../schema/member.model");
-const ProductModel = require("../schema/product.model");
+// const ProductModel = require("../schema/product.model");
 const ViewModel = require("../schema/view.model");
-const Bo_articleModel = require("../schema/bo_article.model");
 
 class View {
   constructor(mb_id) {
@@ -54,35 +53,35 @@ class View {
     }
   }
 
-  async modifyItmeViewCounts(view_ref_id, group_type) {
-    try {
-      switch (group_type) {
-        case "product":
-          await this.productModel
-            .findByIdAndUpdate(
-              {
-                _id: view_ref_id,
-              },
-              { $inc: { product_views: 1 } }
-            )
-            .exec();
-          break;
-        case "community":
-          await this.bo_articleModel
-            .findByIdAndUpdate(
-              {
-                _id: view_ref_id,
-              },
-              { $inc: { art_views: 1 } }
-            )
-            .exec();
-          break;
-      }
-      return true;
-    } catch (err) {
-      throw err;
-    }
-  }
+  //   async modifyItmeViewCounts(view_ref_id, group_type) {
+  //     try {
+  //       switch (group_type) {
+  //         case "product":
+  //           await this.productModel
+  //             .findByIdAndUpdate(
+  //               {
+  //                 _id: view_ref_id,
+  //               },
+  //               { $inc: { product_views: 1 } }
+  //             )
+  //             .exec();
+  //           break;
+  //         case "community":
+  //           await this.bo_articleModel
+  //             .findByIdAndUpdate(
+  //               {
+  //                 _id: view_ref_id,
+  //               },
+  //               { $inc: { art_views: 1 } }
+  //             )
+  //             .exec();
+  //           break;
+  //       }
+  //       return true;
+  //     } catch (err) {
+  //       throw err;
+  //     }
+  //   }
 
   async checkViewExistence(view_ref_id) {
     try {
