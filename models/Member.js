@@ -3,7 +3,10 @@ const bcrypt = require("bcryptjs");
 const Definer = require("../lib/mistake");
 const View = require("./View");
 const assert = require("assert");
-const { shapeIntoMongooseObjectId } = require("../lib/config");
+const {
+  shapeIntoMongooseObjectId,
+  lookup_auth_member_following,
+} = require("../lib/config");
 
 class Member {
   constructor() {
@@ -110,12 +113,18 @@ class Member {
 
   async getChosenMemberData(member, id) {
     try {
-      // const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
       id = shapeIntoMongooseObjectId(id);
       let aggregationQuery = [
         { $match: { _id: id, mb_status: "ACTIVE" } },
         { $unset: "mb_password" },
       ];
+      if (member) {
+        // await this.viewChosenItemByMember(member, id, "member");
+        aggregationQuery.push(
+          lookup_auth_member_following(auth_mb_id, "members")
+        );
+      }
 
       const result = await this.memberModel.aggregate(aggregationQuery).exec();
 
