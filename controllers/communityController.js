@@ -1,4 +1,5 @@
 const assert = require("assert");
+const Definer = require("../lib/mistake");
 const Community = require("../models/Community");
 
 let communityController = module.exports;
@@ -24,6 +25,25 @@ communityController.createArticle = async (req, res) => {
     res.json({ state: "success", data: result });
   } catch (err) {
     console.log(`ERROR, cont/createArticle, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+communityController.getMemberArticles = async (req, res) => {
+  try {
+    console.log("GET: cont/getMemberArticles");
+    const community = new Community(),
+      mb_id = req.query.mb_id !== "none" ? req?.query.mb_id : req.member._id;
+    assert.ok(mb_id, Definer.article_err1);
+    const result = await community.getMemberArticlesData(
+      req.member,
+      mb_id,
+      req.query
+    );
+
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/getMemberArticles, ${err.message} `);
     res.json({ state: "fail", message: err.message });
   }
 };
