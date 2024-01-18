@@ -1,5 +1,8 @@
 const BoArticleModel = require("../schema/bo_article.model");
-const { shapeIntoMongooseObjectId } = require("../lib/config");
+const {
+  shapeIntoMongooseObjectId,
+  lookup_auth_member_liked,
+} = require("../lib/config");
 const Definer = require("../lib/mistake");
 const assert = require("assert");
 const Member = require("./Member");
@@ -48,7 +51,7 @@ class Community {
             },
           },
           { $unwind: "$member_data" },
-          //   todo: article liked by user
+          lookup_auth_member_liked(auth_mb_id),
         ])
         .exec();
       assert.ok(result, Definer.article_err2);
@@ -81,7 +84,7 @@ class Community {
             },
           },
           { $unwind: "$member_data" },
-          //   todo: article liked by user
+          lookup_auth_member_liked(auth_mb_id),
         ])
         .exec();
       assert.ok(result, Definer.article_err3);
