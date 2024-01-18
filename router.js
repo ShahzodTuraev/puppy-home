@@ -34,6 +34,7 @@ router.post(
   memberController.retrieveAuthMember,
   memberController.createReview
 );
+router.post("/reviews", memberController.getReviews);
 // Product related routers
 
 router.post(

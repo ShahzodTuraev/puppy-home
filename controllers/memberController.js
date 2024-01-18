@@ -97,6 +97,18 @@ memberController.createReview = async (req, res) => {
   }
 };
 
+memberController.getReviews = async (req, res) => {
+  try {
+    console.log("POST: cont/getReviews");
+    const review = new Member();
+    const result = await review.getReviewsData(req.body);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/getReviews, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
 memberController.logout = (req, res) => {
   console.log("GET cont/logout");
   res.cookie("access_token", null, { maxAge: 0, httpOnly: true });

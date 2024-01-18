@@ -1,5 +1,5 @@
 const MemberModel = require("../schema/member.model");
-const Review = require("./Review");
+const ReviewModel = require("../schema/review.model");
 const bcrypt = require("bcryptjs");
 const Definer = require("../lib/mistake");
 const View = require("./View");
@@ -9,10 +9,12 @@ const {
   shapeIntoMongooseObjectId,
   lookup_auth_member_following,
 } = require("../lib/config");
+const Review = require("./review");
 
 class Member {
   constructor() {
     this.memberModel = MemberModel;
+    this.reviewModel = ReviewModel;
   }
 
   async signupData(input) {
@@ -201,6 +203,36 @@ class Member {
         content,
         product_rating
       );
+      assert.ok(result, Definer.general_err1);
+
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async getReviewsData(data) {
+    try {
+      const review_ref_id = shapeIntoMongooseObjectId(data.review_ref_id);
+      const page = data.page * 1;
+      const limit = data.limit * 1;
+      const result = await this.reviewModel
+        .aggregate([
+          { $match: { review_ref_id: review_ref_id } },
+          { $sort: { createdAt: -1 } },
+          { $skip: (page - 1) * limit },
+          { $limit: limit },
+          {
+            $lookup: {
+              from: "members",
+              localField: "mb_id",
+              foreignField: "_id",
+              as: "member_data",
+            },
+          },
+          { $unwind: "$member_data" },
+        ])
+        .exec();
       assert.ok(result, Definer.general_err1);
 
       return result;
