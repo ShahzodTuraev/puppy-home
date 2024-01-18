@@ -39,23 +39,35 @@ class Review {
       throw err;
     }
   }
-  async insertMemberReview(review_ref_id, group_type, content) {
+  async insertMemberReview(review_ref_id, group_type, content, product_rating) {
     try {
-      const new_review = new this.reviewModel({
-        mb_id: this.mb_id,
-        review_ref_id: review_ref_id,
-        review_group: group_type,
-        content: content,
-      });
+      const new_review = product_rating
+        ? new this.reviewModel({
+            mb_id: this.mb_id,
+            review_ref_id: review_ref_id,
+            review_group: group_type,
+            content: content,
+            product_rating: product_rating,
+          })
+        : new this.reviewModel({
+            mb_id: this.mb_id,
+            review_ref_id: review_ref_id,
+            review_group: group_type,
+            content: content,
+          });
       const result = await new_review.save();
-      await this.modifyItmeViewCounts(review_ref_id, group_type);
+      await this.modifyItmeViewCounts(
+        review_ref_id,
+        group_type,
+        product_rating
+      );
       return result;
     } catch (err) {
       throw err;
     }
   }
 
-  async modifyItmeViewCounts(review_ref_id, group_type) {
+  async modifyItmeViewCounts(review_ref_id, group_type, product_rating) {
     try {
       switch (group_type) {
         case "product":
@@ -64,7 +76,10 @@ class Review {
               {
                 _id: review_ref_id,
               },
-              { $inc: { product_reviews: 1 } }
+              {
+                $inc: { product_reviews: 1 },
+                $inc: { product_rating: product_rating },
+              }
             )
             .exec();
           break;

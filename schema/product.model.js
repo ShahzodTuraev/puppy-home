@@ -53,6 +53,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    product_rating: {
+      type: Number,
+      default: 0,
+    },
     product_delivery_cost: {
       type: Number,
       required: true,

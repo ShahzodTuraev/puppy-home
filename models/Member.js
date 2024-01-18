@@ -188,6 +188,7 @@ class Member {
       const review = new Review(mb_id);
       const group_type = data.group_type;
       const content = data.content;
+      const product_rating = data.product_rating ? data.product_rating : 0;
       const isValid = await review.validateChosenTarger(
         review_ref_id,
         group_type
@@ -197,7 +198,8 @@ class Member {
       const result = await review.insertMemberReview(
         review_ref_id,
         group_type,
-        content
+        content,
+        product_rating
       );
       assert.ok(result, Definer.general_err1);
 
