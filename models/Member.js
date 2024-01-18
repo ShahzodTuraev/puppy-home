@@ -1,4 +1,5 @@
 const MemberModel = require("../schema/member.model");
+const Review = require("./Review");
 const bcrypt = require("bcryptjs");
 const Definer = require("../lib/mistake");
 const View = require("./View");
@@ -178,6 +179,32 @@ class Member {
       like_status: doesExist ? 0 : 1,
     };
     return result;
+  }
+
+  async createReviewData(member, data) {
+    try {
+      const review_ref_id = shapeIntoMongooseObjectId(data.review_ref_id);
+      const mb_id = shapeIntoMongooseObjectId(member._id);
+      const review = new Review(mb_id);
+      const group_type = data.group_type;
+      const content = data.content;
+      const isValid = await review.validateChosenTarger(
+        review_ref_id,
+        group_type
+      );
+      assert.ok(isValid, Definer.general_err2);
+
+      const result = await review.insertMemberReview(
+        review_ref_id,
+        group_type,
+        content
+      );
+      assert.ok(result, Definer.general_err1);
+
+      return result;
+    } catch (err) {
+      throw err;
+    }
   }
 }
 

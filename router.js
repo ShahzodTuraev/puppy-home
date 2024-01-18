@@ -29,6 +29,11 @@ router.post(
   memberController.likeMemberChosen
 );
 
+router.post(
+  "/review/create",
+  memberController.retrieveAuthMember,
+  memberController.createReview
+);
 // Product related routers
 
 router.post(
