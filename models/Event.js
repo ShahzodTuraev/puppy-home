@@ -50,5 +50,22 @@ class Event {
       throw err;
     }
   }
+
+  async getTargetEventsData(page, limit) {
+    try {
+      const result = await this.eventModel
+        .aggregate([
+          { $match: { event_status: "ACTIVE" } },
+          { $sort: { createdAt: -1 } },
+          { $skip: (page - 1) * limit },
+          { $limit: limit },
+        ])
+        .exec();
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 module.exports = Event;

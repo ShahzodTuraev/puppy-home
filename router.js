@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const memberController = require("./controllers/memberController");
 const productController = require("./controllers/productController");
+const eventController = require("./controllers/eventController");
 const orderController = require("./controllers/orderController");
 const followController = require("./controllers/followController");
 const communityController = require("./controllers/communityController");
@@ -48,6 +49,10 @@ router.get(
   memberController.retrieveAuthMember,
   productController.getChosenProduct
 );
+
+// Event related routes
+
+router.get("/events", eventController.getTargetEvents);
 
 // Service related routers
 

@@ -44,6 +44,10 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    product_sold_cnt: {
+      type: Number,
+      default: 0,
+    },
 
     product_point: {
       type: Number,

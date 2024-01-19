@@ -91,9 +91,9 @@
           <th scope="col">Product name</th>
           <th scope="col">Product type</th>
           <th scope="col">Product price</th>
-          <th scope="col">Product discount</th>
-          <th scope="col">Discount period</th>
           <th scope="col">Product left count</th>
+          <th scope="col">Product sold count</th>
+          <th scope="col">Product discount</th>
           <th scope="col">Product status</th>
           <th scope="col">Edit & Delete product</th>
         </thead>
@@ -103,9 +103,9 @@
           <td><%= value.product_name%></td>
           <td><%= value.product_collection%></td>
           <td><%= value.product_price%></td>
-          <td><%= value.product_discount%></td>
-          <td><%= value.product_discount_period%></td>
           <td><%= value.product_left_cnt%></td>
+          <td><%= value.product_sold_cnt%></td>
+          <td><%= value.product_discount%></td>
           <td><%= value.product_status%></td>
           <td>
             <a
@@ -213,7 +213,7 @@
             </select>
           </div>
         </div>
-        <div class="form-row double_input">
+        <div class="form-row double_input">   
           <div class="col">
             <label for="product_delivery_cost">Product delivery cost (won)</label>
             <input

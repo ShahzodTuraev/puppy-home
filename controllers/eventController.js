@@ -46,3 +46,17 @@ eventController.editSelectedEvent = async (req, res) => {
     res.json({ state: "fail", message: err.message });
   }
 };
+
+eventController.getTargetEvents = async (req, res) => {
+  try {
+    console.log("GET: cont/getTargetEvents");
+    const event = new Event(),
+      page = req.query.page * 1,
+      limit = req.query.limit * 1,
+      result = await event.getTargetEventsData(page, limit);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/getTargetEvents, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};

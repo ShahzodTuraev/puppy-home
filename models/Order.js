@@ -3,11 +3,13 @@ const OrderModel = require("../schema/order.model");
 const OrderItemModel = require("../schema/order_item.model");
 const Definer = require("../lib/mistake");
 const assert = require("assert");
+const ProductModel = require("../schema/product.model");
 
 class Order {
   constructor() {
     this.orderModel = OrderModel;
     this.orderItemModel = OrderItemModel;
+    this.productModel = ProductModel;
   }
 
   async createOrderData(member, data) {
@@ -43,7 +45,7 @@ class Order {
       });
       const result = await new_order.save();
       assert.ok(result, Definer.order_err1);
-      return result._id;
+      return result;
     } catch (err) {
       console.log(err);
       throw new Error(Definer.order_err1);
@@ -74,12 +76,34 @@ class Order {
         order_id: order_id,
         product_id: item["_id"],
       });
+      await this.insertSoldLeftCount(item["_id"], item["quantity"]);
       const result = await order_item.save();
       assert.ok(result, Definer.order_err2);
       return "created";
     } catch (err) {
       console.log(err);
       throw new Error(Definer.order_err2);
+    }
+  }
+  async insertSoldLeftCount(id, quantity) {
+    try {
+      await this.productModel
+        .findByIdAndUpdate(
+          {
+            _id: id,
+          },
+          {
+            $inc: {
+              product_sold_cnt: quantity * 1,
+              product_left_cnt: quantity * -1,
+            },
+          }
+        )
+        .exec();
+      return true;
+    } catch (err) {
+      console.log(err);
+      throw err;
     }
   }
 
