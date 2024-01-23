@@ -56,7 +56,7 @@ class Event {
       const result = await this.eventModel
         .aggregate([
           { $match: { event_status: "ACTIVE" } },
-          { $sort: { createdAt: -1 } },
+          { $sort: { createdAt: 1 } },
           { $skip: (page - 1) * limit },
           { $limit: limit },
         ])

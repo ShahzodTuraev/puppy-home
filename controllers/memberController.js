@@ -100,6 +100,7 @@ memberController.createReview = async (req, res) => {
 memberController.getReviews = async (req, res) => {
   try {
     console.log("POST: cont/getReviews");
+
     const review = new Member();
     const result = await review.getReviewsData(req.body);
     res.json({ state: "success", data: result });

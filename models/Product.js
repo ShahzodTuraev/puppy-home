@@ -15,6 +15,8 @@ class Product {
   async getAllProductsData(member, data) {
     try {
       const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+      const min_price = data.price[0] * 1000;
+      const max_price = data.price[1] * 1000;
       const match = {
         product_status: "PROCESS",
         product_collection: {
@@ -22,7 +24,10 @@ class Product {
         },
         $or: [
           {
-            product_price: { $gt: data.min_price * 1, $lt: data.max_price * 1 },
+            product_price: {
+              $gt: min_price,
+              $lt: max_price,
+            },
           },
         ],
       };

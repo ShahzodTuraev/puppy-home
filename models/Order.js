@@ -1,4 +1,7 @@
-const { shapeIntoMongooseObjectId } = require("../lib/config");
+const {
+  shapeIntoMongooseObjectId,
+  order_status_enums,
+} = require("../lib/config");
 const OrderModel = require("../schema/order.model");
 const OrderItemModel = require("../schema/order_item.model");
 const Definer = require("../lib/mistake");
@@ -15,16 +18,19 @@ class Order {
   async createOrderData(member, data) {
     try {
       let order_total_amount = 0,
-        delivery_cost = 0;
+        order_delivery_cost = 0;
       const mb_id = shapeIntoMongooseObjectId(member._id);
       data.map((item) => {
-        order_total_amount += item["quantity"] * item["price"];
-        delivery_cost += item["delivery_cost"];
+        order_total_amount +=
+          item["quantity"] *
+          Math.round((item["price"] * (100 - item["discount"])) / 1000) *
+          10;
+        order_delivery_cost += item["delivery_fee"];
       });
 
       const order_id = await this.saveOrderData(
         order_total_amount,
-        delivery_cost,
+        order_delivery_cost,
         mb_id
       );
 
@@ -36,11 +42,11 @@ class Order {
     }
   }
 
-  async saveOrderData(order_total_amount, delivery_cost, mb_id) {
+  async saveOrderData(order_total_amount, order_delivery_cost, mb_id) {
     try {
       const new_order = new this.orderModel({
         order_total_amount: order_total_amount,
-        order_delivery_cost: delivery_cost,
+        order_delivery_cost: order_delivery_cost,
         mb_id: mb_id,
       });
       const result = await new_order.save();
@@ -72,7 +78,7 @@ class Order {
       const order_item = new this.orderItemModel({
         item_quantity: item["quantity"],
         item_price: item["price"],
-        item_delivery_cost: item["delivery_cost"],
+        item_delivery_cost: item["delivery_fee"],
         order_id: order_id,
         product_id: item["_id"],
       });
@@ -110,7 +116,9 @@ class Order {
   async getMyOrdersData(member, query) {
     try {
       const mb_id = shapeIntoMongooseObjectId(member._id),
-        order_status = query.status.toUpperCase(),
+        order_query = query.status.toUpperCase(),
+        order_status =
+          order_query === "ALL" ? { $in: order_status_enums } : order_query,
         matches = { mb_id: mb_id, order_status: order_status };
       const result = await this.orderModel
         .aggregate([

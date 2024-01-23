@@ -39,7 +39,6 @@ eventController.editSelectedEvent = async (req, res) => {
       data = req.body,
       id = req.params.id,
       result = await event.editSelectedEventData(id, data);
-    console.log(result);
     res.json({ state: "success", data: result });
   } catch (err) {
     console.log(`ERROR, cont/editSelectedEvent, ${err.message} `);

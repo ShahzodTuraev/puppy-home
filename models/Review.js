@@ -77,8 +77,7 @@ class Review {
                 _id: review_ref_id,
               },
               {
-                $inc: { product_reviews: 1 },
-                $inc: { product_rating: product_rating },
+                $inc: { product_rating: product_rating, product_reviews: 1 },
               }
             )
             .exec();
