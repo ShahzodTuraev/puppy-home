@@ -144,45 +144,59 @@ $(function () {
   });
 
   // contact admin scripts end
-
-  // show messages scripts start
-
-  $(".show_message").on("click", async () => {
-    $(".notification_dropdown").slideToggle();
+  $(".order_button").on("click", async (e) => {
+    axios
+      .post("/admin/orders-edit", {
+        order_id: e.target.id,
+        mb_id: e.target.value,
+      })
+      .then((response) => {
+        const result = response.data;
+        if (result.state === "success") alert("Successfully updated!");
+        else alert(result.message);
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
   });
+});
 
-  $(".delete_one_message").on("click", async (e) => {
-    try {
-      const id = e.target.id;
-      let message_count = $(".message_count_num").text() * 1;
-      $(".message_count_num").text(message_count - 1);
-      $(`#${id}`).parentsUntil(".notification_messages_wrap").hide();
-      const response = await axios.post(`/admin/notification/receive`, {
-        id: id,
-      });
-      const result = response.data;
-      if (result.state !== "success") alert(result.message);
-    } catch (err) {
-      console.log("deleteNotification", err);
-    }
-  });
+// show messages scripts start
 
-  $("#delete_all_message").on("click", async () => {
-    try {
-      $(".message_count_num").text("0");
-      $(".message_container").hide();
-      setTimeout(() => {
-        $(".notification_dropdown").slideUp();
-      }, 100);
-      const response = await axios.post(`/admin/notification/receive`, {
-        id: "all",
-      });
-      const result = response.data;
-      if (result.state !== "success") alert(result.message);
-    } catch (err) {
-      console.log("deleteNotification", err);
-    }
-  });
+$(".show_message").on("click", async () => {
+  $(".notification_dropdown").slideToggle();
+});
+
+$(".delete_one_message").on("click", async (e) => {
+  try {
+    const id = e.target.id;
+    let message_count = $(".message_count_num").text() * 1;
+    $(".message_count_num").text(message_count - 1);
+    $(`#${id}`).parentsUntil(".notification_messages_wrap").hide();
+    const response = await axios.post(`/admin/notification/receive`, {
+      id: id,
+    });
+    const result = response.data;
+    if (result.state !== "success") alert(result.message);
+  } catch (err) {
+    console.log("deleteNotification", err);
+  }
+});
+
+$("#delete_all_message").on("click", async () => {
+  try {
+    $(".message_count_num").text("0");
+    $(".message_container").hide();
+    setTimeout(() => {
+      $(".notification_dropdown").slideUp();
+    }, 100);
+    const response = await axios.post(`/admin/notification/receive`, {
+      id: "all",
+    });
+    const result = response.data;
+    if (result.state !== "success") alert(result.message);
+  } catch (err) {
+    console.log("deleteNotification", err);
+  }
 
   // show messages scripts end
 });

@@ -4,6 +4,7 @@ const shopController = require("./controllers/shopController");
 const productController = require("./controllers/productController");
 const notificationController = require("./controllers/notificationController");
 const eventController = require("./controllers/eventController");
+const orderController = require("./controllers/orderController");
 const uploader_product = require("./utils/upload-multer")("products");
 const uploader_member = require("./utils/upload-multer")("members");
 /********************
@@ -77,12 +78,6 @@ router_bssr
     productController.getUpdateChosenProduct
   );
 
-router_bssr.get(
-  "/statistics",
-  shopController.validateAuthShop,
-  productController.getMyStatistics
-);
-
 // Notification related routers
 
 router_bssr.post(
@@ -119,5 +114,19 @@ router_bssr.post(
   "/event-edit/:id",
   shopController.validateAdmin,
   eventController.editSelectedEvent
+);
+
+// Orders related routers
+
+router_bssr.get(
+  "/orders-list",
+  shopController.validateAdmin,
+  orderController.getOrdersAdmin
+);
+
+router_bssr.post(
+  "/orders-edit",
+  shopController.validateAdmin,
+  orderController.editOrdersAdmin
 );
 module.exports = router_bssr;

@@ -21,7 +21,7 @@ body {
 .nav_link_wrap {
   display: flex;
   justify-content: space-between;
-  width: 50%;
+  width: 30%;
 }
 
 .nav_link_wrap .nav_link {
@@ -733,16 +733,15 @@ textarea {
 }
 
 /* EVENTS STYLE START */
-.event_page .event_feat {
+.event_feat {
   display: flex;
   width: 75%;
 }
-
-.event_page .event_feat p {
+.event_feat p {
   width: 85%;
 }
 
-.event_page .event_feat span {
+.event_feat span {
   font-weight: 500;
   margin-right: 10px;
 }
@@ -760,3 +759,6 @@ textarea {
   margin-right: 10px;
 }
 /* EVENTS STYLE END */
+/* ORDERS STYLE START */
+
+/* ORDERS STYLE END */

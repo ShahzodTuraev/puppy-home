@@ -165,5 +165,52 @@ class Order {
       throw err;
     }
   }
+
+  async getOrdersAdminData() {
+    try {
+      const result = await this.orderModel
+        .aggregate([
+          { $match: { order_status: "PROCESS" } },
+          { $sort: { createdAt: -1 } },
+          {
+            $lookup: {
+              from: "orderitems",
+              localField: "_id",
+              foreignField: "order_id",
+              as: "order_items",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "order_items.product_id",
+              foreignField: "_id",
+              as: "product_data",
+            },
+          },
+        ])
+        .exec();
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async editOrdersAdminData(data) {
+    try {
+      const mb_id = shapeIntoMongooseObjectId(data.mb_id),
+        order_id = shapeIntoMongooseObjectId(data.order_id),
+        order_status = "FINISHED";
+
+      const result = await this.orderModel.findOneAndUpdate(
+        { mb_id: mb_id, _id: order_id }, //filtering query mechanism
+        { order_status: order_status },
+        { runValidators: true, lean: true, returnDocument: "after" } //options
+      );
+      assert.ok(result, Definer.order_err3);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 module.exports = Order;
