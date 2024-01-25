@@ -158,7 +158,6 @@ class Notification {
           )
           .exec();
       }
-
       assert.ok(result, Definer.general_err1);
       return result;
     } catch (err) {

@@ -7,6 +7,7 @@ const orderController = require("./controllers/orderController");
 const followController = require("./controllers/followController");
 const communityController = require("./controllers/communityController");
 const uploader_community = require("./utils/upload-multer")("community");
+const notificationController = require("./controllers/notificationController");
 
 /********************
  *     REST API     *
@@ -139,6 +140,20 @@ router.get(
   "/follow/followers",
   memberController.retrieveAuthMember,
   followController.getMemberFollowers
+);
+
+// Notification related routers
+
+router.get(
+  "/receive-notification",
+  memberController.retrieveAuthMember,
+  notificationController.receiveNotification
+);
+
+router.post(
+  "/seen-notification",
+  memberController.retrieveAuthMember,
+  notificationController.seenNotification
 );
 
 module.exports = router;
