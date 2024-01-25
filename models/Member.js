@@ -240,6 +240,18 @@ class Member {
       throw err;
     }
   }
+
+  async myLikedProductsData(member, data) {
+    try {
+      const mb_id = shapeIntoMongooseObjectId(member?._id);
+      const like = new Like();
+      const result = await like.myLikesData(mb_id, data);
+      assert.ok(result, Definer.general_err2);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 module.exports = Member;

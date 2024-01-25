@@ -57,7 +57,6 @@ class Product {
     try {
       const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
       id = shapeIntoMongooseObjectId(id);
-
       if (member) {
         const member_obj = new Member();
         await member_obj.viewChosenItemByMember(member, id, "product");
@@ -101,6 +100,15 @@ class Product {
           { $sort: sort },
           { $skip: (data.page * 1 - 1) * data.limit },
           { $limit: data.limit * 1 },
+          {
+            $lookup: {
+              from: "members",
+              localField: "shop_mb_id",
+              foreignField: "_id",
+              as: "member_data",
+            },
+          },
+          { $unwind: "$member_data" },
           lookup_auth_member_liked(auth_mb_id),
         ])
         .exec();

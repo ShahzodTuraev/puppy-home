@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { like_view_group_list, board_id_enum_list } = require("../lib/config");
+const { like_view_group_list } = require("../lib/config");
 const Scheme = mongoose.Schema;
 const likeScheme = new mongoose.Schema(
   {

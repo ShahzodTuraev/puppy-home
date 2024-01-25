@@ -65,6 +65,18 @@ memberController.getChosenMember = async (req, res) => {
   }
 };
 
+memberController.myLikedProducts = async (req, res) => {
+  try {
+    console.log("GET: cont/myLikedProducts");
+    const member = new Member(),
+      result = await member.myLikedProductsData(req.member, req.body);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/myLikedProducts, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
 memberController.likeMemberChosen = async (req, res) => {
   try {
     console.log("POST: cont/likeMemberChosen");

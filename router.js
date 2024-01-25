@@ -31,6 +31,12 @@ router.post(
 );
 
 router.post(
+  "/liked-products",
+  memberController.retrieveAuthMember,
+  memberController.myLikedProducts
+);
+
+router.post(
   "/review/create",
   memberController.retrieveAuthMember,
   memberController.createReview
@@ -61,7 +67,6 @@ router.post(
   memberController.retrieveAuthMember,
   productController.getAllServices
 );
-
 // Order related routers
 
 router.post(
