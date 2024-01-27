@@ -41,6 +41,18 @@ productController.getAllServices = async (req, res) => {
   }
 };
 
+productController.searchProduct = async (req, res) => {
+  try {
+    console.log("GET: cont/searchProduct");
+    const query = req.query.text;
+    const product = new Product();
+    const result = await product.searchProductData(query);
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/searchProduct, ${err.message} `);
+    res.json({ state: "fail", message: err.message });
+  }
+};
 /**************************************
  *      BSSR RELATED METHODS          *
  *************************************/

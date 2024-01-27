@@ -120,6 +120,20 @@ class Product {
     }
   }
 
+  async searchProductData(query) {
+    try {
+      await this.productModel.createIndexes({ product_name: "text" });
+      const result = await this.productModel.find({
+        $text: { $search: "protein" },
+      });
+
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async getAllProductsDataShop(member) {
     try {
       member._id = shapeIntoMongooseObjectId(member._id);

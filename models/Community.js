@@ -11,10 +11,17 @@ class Community {
     this.boArticleModel = BoArticleModel;
   }
 
-  async createArticleData(member, data) {
+  async createArticleData(member, data, image) {
     try {
-      data.mb_id = shapeIntoMongooseObjectId(member._id);
-      const new_article = await this.saveArticleData(data);
+      const mb_id = shapeIntoMongooseObjectId(member._id);
+      const artData = {
+        art_subject: data.art_subject,
+        art_content: data.art_content,
+        art_image: image ? image.path.replace(/\\/g, "/") : null,
+        mb_id: mb_id,
+      };
+
+      const new_article = await this.saveArticleData(artData);
       return new_article;
     } catch (err) {
       throw err;
@@ -30,15 +37,30 @@ class Community {
     }
   }
 
-  async getMemberArticlesData(member, mb_id, inquery) {
+  async getArticlesData(member, inquery) {
     try {
-      mb_id = shapeIntoMongooseObjectId(mb_id);
       const auth_mb_id = shapeIntoMongooseObjectId(member?._id),
         page = inquery["page"] ? inquery["page"] * 1 : 1,
+        mb_id = inquery.mb_id,
         limit = inquery["limit"] ? inquery["limit"] * 1 : 5;
+      let match;
+      switch (mb_id) {
+        case "all":
+          match = { art_status: "active" };
+          break;
+        case "none":
+          match = { mb_id: auth_mb_id, art_status: "active" };
+          break;
+        default:
+          match = {
+            mb_id: shapeIntoMongooseObjectId(mb_id),
+            art_status: "active",
+          };
+          break;
+      }
       const result = await this.boArticleModel
         .aggregate([
-          { $match: { mb_id: mb_id, art_status: "active" } },
+          { $match: match },
           { $sort: { createdAt: -1 } },
           { $skip: (page - 1) * limit },
           { $limit: limit },
@@ -55,39 +77,6 @@ class Community {
         ])
         .exec();
       assert.ok(result, Definer.article_err2);
-      return result;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async getArticlesData(member, inquery) {
-    try {
-      const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
-      let matches = { art_status: "active" };
-
-      inquery.limit *= 1;
-      inquery.page *= 1;
-      const sort = { createdAt: -1 };
-      const result = await this.boArticleModel
-        .aggregate([
-          { $match: matches },
-          { $sort: sort },
-          { $skip: (inquery.page - 1) * inquery.limit },
-          { $limit: inquery.limit },
-          {
-            $lookup: {
-              from: "members",
-              localField: "mb_id",
-              foreignField: "_id",
-              as: "member_data",
-            },
-          },
-          { $unwind: "$member_data" },
-          lookup_auth_member_liked(auth_mb_id),
-        ])
-        .exec();
-      assert.ok(result, Definer.article_err3);
       return result;
     } catch (err) {
       throw err;

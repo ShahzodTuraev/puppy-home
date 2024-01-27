@@ -20,7 +20,11 @@ communityController.createArticle = async (req, res) => {
   try {
     console.log("POST: cont/createArticle");
     const community = new Community();
-    const result = await community.createArticleData(req.member, req.body);
+    const result = await community.createArticleData(
+      req.member,
+      req.body,
+      req.file
+    );
 
     res.json({ state: "success", data: result });
   } catch (err) {
@@ -29,21 +33,15 @@ communityController.createArticle = async (req, res) => {
   }
 };
 
-communityController.getMemberArticles = async (req, res) => {
+communityController.getArticles = async (req, res) => {
   try {
-    console.log("GET: cont/getMemberArticles");
-    const community = new Community(),
-      mb_id = req.query.mb_id !== "none" ? req?.query.mb_id : req.member._id;
-    assert.ok(mb_id, Definer.article_err1);
-    const result = await community.getMemberArticlesData(
-      req.member,
-      mb_id,
-      req.query
-    );
+    console.log("GET: cont/getArticles");
+    const community = new Community();
+    const result = await community.getArticlesData(req.member, req.query);
 
     res.json({ state: "success", data: result });
   } catch (err) {
-    console.log(`ERROR, cont/getMemberArticles, ${err.message} `);
+    console.log(`ERROR, cont/getArticles, ${err.message} `);
     res.json({ state: "fail", message: err.message });
   }
 };

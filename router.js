@@ -91,25 +91,14 @@ router.post(
 // Community related routers
 
 router.post(
-  "/community/image",
-  uploader_community.array("community_image", 5),
-  communityController.imageInsertion
-);
-
-router.post(
   "/community/create",
   memberController.retrieveAuthMember,
+  uploader_community.single("art_image"),
   communityController.createArticle
 );
 
 router.get(
   "/community/articles",
-  memberController.retrieveAuthMember,
-  communityController.getMemberArticles
-);
-
-router.get(
-  "/community/all-articles",
   memberController.retrieveAuthMember,
   communityController.getArticles
 );
@@ -156,4 +145,7 @@ router.post(
   notificationController.seenNotification
 );
 
+// Searching related router
+
+router.get("/search-product", productController.searchProduct);
 module.exports = router;
