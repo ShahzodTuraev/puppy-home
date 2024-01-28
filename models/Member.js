@@ -39,7 +39,7 @@ class Member {
   async loginData(input) {
     try {
       const member = await this.memberModel
-        .findOne({ mb_nick: input.mb_nick }, { mb_nick: 1, mb_password: 1 }) //pasword shuni quymasa kelmaydi. negaki sxema modulda password kelmasin deb mantiq qushganmiz.
+        .findOne({ mb_nick: input.mb_nick }, { mb_nick: 1, mb_password: 1 })
         .exec();
       assert.ok(member, Definer.auth_err3);
 
@@ -124,16 +124,64 @@ class Member {
         { $unset: "mb_password" },
       ];
       if (member) {
-        // await this.viewChosenItemByMember(member, id, "member");
         aggregationQuery.push(
           lookup_auth_member_following(auth_mb_id, "members")
         );
       }
-
       const result = await this.memberModel.aggregate(aggregationQuery).exec();
 
       assert.ok(result, Definer.general_err2);
       return result[0];
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateMemberData(id, data, image) {
+    try {
+      const mb_id = shapeIntoMongooseObjectId(id);
+      id = shapeIntoMongooseObjectId(id);
+      let params = {
+        mb_nick: data.mb_nick,
+        mb_email: data.mb_email,
+        mb_phone: data.mb_phone,
+        mb_address: data.mb_address,
+        mb_description: data.mb_description,
+        mb_image: image ? image.path.replace(/\\/g, "/") : null,
+      };
+      console.log("params:::", params);
+      for (let prop in params) if (!params[prop]) delete params[prop];
+      const result = await this.memberModel
+        .findOneAndUpdate({ _id: mb_id }, params, {
+          runValidators: true,
+          lean: true,
+          returnDocument: "after",
+        })
+        .exec();
+      assert.ok(result, Definer.general_err1);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
+  async updateMemberPasswordData(data) {
+    try {
+      const salt = await bcrypt.genSalt();
+      const mb_password = await bcrypt.hash(data.mb_password, salt);
+      const mb_email = data.mb_email;
+      const result = await this.memberModel
+        .findOneAndUpdate(
+          { mb_email: mb_email },
+          { mb_password: mb_password },
+          {
+            runValidators: true,
+            lean: true,
+            returnDocument: "after",
+          }
+        )
+        .exec();
+      assert.ok(result, Definer.general_err1);
+      return true;
     } catch (err) {
       throw err;
     }

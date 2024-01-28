@@ -7,6 +7,7 @@ const orderController = require("./controllers/orderController");
 const followController = require("./controllers/followController");
 const communityController = require("./controllers/communityController");
 const uploader_community = require("./utils/upload-multer")("community");
+const uploader_member = require("./utils/upload-multer")("members");
 const notificationController = require("./controllers/notificationController");
 
 /********************
@@ -36,6 +37,15 @@ router.post(
   memberController.retrieveAuthMember,
   memberController.myLikedProducts
 );
+
+router.post(
+  "/member/update",
+  memberController.retrieveAuthMember,
+  uploader_member.single("mb_image"),
+  memberController.updateMember
+);
+
+router.post("/update-password", memberController.updateMemberPassword);
 
 router.post(
   "/review/create",
@@ -68,6 +78,7 @@ router.post(
   memberController.retrieveAuthMember,
   productController.getAllServices
 );
+
 // Order related routers
 
 router.post(

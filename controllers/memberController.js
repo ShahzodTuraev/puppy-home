@@ -60,7 +60,36 @@ memberController.getChosenMember = async (req, res) => {
     const result = await member.getChosenMemberData(req.member, id);
     res.json({ state: "success", data: result });
   } catch (err) {
-    console.log(`ERROR, cont/getChosenMember, ${err.message}`);
+    console.log(`ERROR, cont/getChosenMemberi, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.updateMember = async (req, res) => {
+  try {
+    console.log("POST: cont/updateMember");
+    assert.ok(req.member, Definer.auth_err3);
+    const member = new Member(),
+      result = await member.updateMemberData(
+        req.member?._id,
+        req.body,
+        req.file
+      );
+    res.json({ state: "success", data: result });
+  } catch (err) {
+    console.log(`ERROR, cont/updateMember, ${err.message}`);
+    res.json({ state: "fail", message: err.message });
+  }
+};
+
+memberController.updateMemberPassword = async (req, res) => {
+  try {
+    console.log("POST: cont/updateMemberPassword");
+    const member = new Member();
+    await member.updateMemberPasswordData(req.body);
+    res.json({ state: "success", data: "Password Changed" });
+  } catch (err) {
+    console.log(`ERROR, cont/updateMemberPassword, ${err.message}`);
     res.json({ state: "fail", message: err.message });
   }
 };
