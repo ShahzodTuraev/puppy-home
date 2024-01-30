@@ -1,3 +1,4 @@
+const http = require("http");
 console.log("Web server is running");
 const express = require("express");
 const app = express();
@@ -51,4 +52,27 @@ app.set("view engine", "ejs");
 app.use("/", router); // for restAPI
 app.use("/admin", router_bssr); //for BSSR
 
-module.exports = app;
+const server = http.createServer(app);
+// SOCKET.IO BACKEND SERVER
+const io = require("socket.io")(server, {
+  serveClient: false,
+  origins: "*:*",
+  transport: ["websocket", "xhr-polling"],
+});
+
+let online_users = 0;
+io.on("connection", function (socket) {
+  online_users++;
+
+  socket.emit("greetMsg", { text: "welcome" });
+  io.emit("infoMsg", { total: online_users });
+  socket.on("disconnect", function () {
+    online_users--;
+    socket.broadcast.emit("infoMsg", { total: online_users });
+  });
+
+  socket.on("createMsg", function (data) {
+    io.emit("newMsg", data);
+  });
+});
+module.exports = server;

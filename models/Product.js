@@ -17,20 +17,40 @@ class Product {
       const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
       const min_price = data.price[0] * 1000;
       const max_price = data.price[1] * 1000;
-      const match = {
-        product_status: "PROCESS",
-        product_collection: {
-          $in: data.product_collection,
-        },
-        $or: [
-          {
-            product_price: {
-              $gt: min_price,
-              $lt: max_price,
-            },
-          },
-        ],
-      };
+      const match =
+        data.search !== ""
+          ? {
+              product_status: "PROCESS",
+              product_collection: {
+                $in: data.product_collection,
+              },
+              $or: [
+                {
+                  product_price: {
+                    $gt: min_price,
+                    $lt: max_price,
+                  },
+                },
+              ],
+              product_name: {
+                $regex: ".*" + data.search + ".*",
+                $options: "i",
+              },
+            }
+          : {
+              product_status: "PROCESS",
+              product_collection: {
+                $in: data.product_collection,
+              },
+              $or: [
+                {
+                  product_price: {
+                    $gt: min_price,
+                    $lt: max_price,
+                  },
+                },
+              ],
+            };
 
       const sort =
         data.order === "product_price"
