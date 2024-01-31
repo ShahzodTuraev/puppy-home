@@ -1,6 +1,7 @@
 <%-include('includes/header')%>
 <link rel="stylesheet" type="text/css" href="/css/shop.css" />
 <script src="/js/shop.js"></script>
+<script src="/js/admin.js"></script>
 <body>
     <div class="shop_navbar">
         <div class="nav_container">
@@ -223,6 +224,14 @@
 </div>
 <!-- CONTACT ADMIN POPUP END -->
 
-    <script src="/js/admin.js"></script>
+    <script>
+      $(function () {
+
+        $(".show_message").on("click", async () => {
+          $(".notification_dropdown").slideToggle();
+          console.log("heee");
+        });
+      })
+    </script>
 </body>
 <%-include('includes/footer')%>

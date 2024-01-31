@@ -164,6 +164,7 @@ $(function () {
 
 $(".show_message").on("click", async () => {
   $(".notification_dropdown").slideToggle();
+  console.log("heee");
 });
 
 $(".delete_one_message").on("click", async (e) => {
