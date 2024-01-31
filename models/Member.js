@@ -9,7 +9,7 @@ const {
   shapeIntoMongooseObjectId,
   lookup_auth_member_following,
 } = require("../lib/config");
-const Review = require("./review");
+const Review = require("./Review");
 
 class Member {
   constructor() {
