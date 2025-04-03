@@ -32,6 +32,7 @@ memberController.login = async (req, res) => {
     res.cookie("access_token", token, {
       maxAge: 6 * 3600 * 1000,
       httpOnly: false,
+      secure: true,
       sameSite: "None", // Allows cookies to be sent in cross-origin requests
     });
     res.json({ state: "success", data: result });
